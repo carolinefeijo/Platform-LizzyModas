@@ -6,7 +6,7 @@ import {
   setCreateUserSuccess,
 } from "./userSlice";
 import api from "../../../api";
-import type { UserResponse, CreateUserPayload } from "./types";
+import type { UserResponse, CreateUserPayload, User } from "./types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 function* fetchUsersSaga(): Generator {
@@ -28,15 +28,20 @@ function* setCreateUserSaga(
 ): Generator {
   yield console.log("Criar usuário:", action.payload);
   try {
-    const { data: response }: { data: UserResponse } = yield call(
+    const { data: response }: { data: User } = yield call(
       api.post,
       "/users",
       action.payload,
     );
-    yield put(setCreateUserSuccess(response));
-    yield put(fetchUsersRequest());
+    yield put(
+      setCreateUserSuccess({
+        user: response,
+      }),
+    );
+
+    console.log("Usuário criado com sucesso:", response);
   } catch (error) {
-    console.log(error);
+    console.log("erro ao criar usuário:", error);
   }
 }
 

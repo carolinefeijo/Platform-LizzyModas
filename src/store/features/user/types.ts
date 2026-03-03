@@ -39,6 +39,8 @@ export type PayloadActions = {
   };
   setCreateUserSuccess: {
     type: string;
-    payload: UserResponse;
+    payload: {
+      user: User;
+    };
   };
 };

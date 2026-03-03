@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Modal from "../../../../components/Modal";
 import { setCreateUserRequest } from "../../../../store/features/user/userSlice";
 import { useDispatch } from "react-redux";
+import Modal from "../../../../components/Modal";
 
 function Create({
   visible,
@@ -32,7 +32,6 @@ function Create({
       setError("Por favor, preencha os campos corretamente.");
       return;
     }
-
     dispatch(
       setCreateUserRequest({
         name,
