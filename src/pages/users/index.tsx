@@ -9,6 +9,7 @@ import Header from "../../components/Header";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete";
+import type { User } from "../../store/features/user/types";
 
 function Users() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function Users() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [selected, setSelected] = useState<User | null>(null);
 
   // abrir modal
   const openModal = () => {
@@ -32,7 +34,8 @@ function Users() {
     setIsOpenEditModal(false);
   };
 
-  const openEditModal = () => {
+  const openEditModal = (user: User) => {
+    setSelected(user);
     setIsOpenEditModal(true);
   };
 
@@ -57,7 +60,6 @@ function Users() {
           marginTop: "50px",
         }}
       >
-        {/* <Loading /> */}
         <div style={{ display: "flex", gap: "5rem", alignItems: "center" }}>
           <h2>Total de colaboradores</h2>
           <button
@@ -160,7 +162,7 @@ function Users() {
                       padding: "5px 10px",
                     }}
                     onClick={() => {
-                      openEditModal();
+                      openEditModal(user);
                     }}
                   >
                     Editar
@@ -187,7 +189,12 @@ function Users() {
         })}
       </div>
       <Create visible={isOpenModal} onClose={closeModal} />
-      <Edit visible={isOpenEditModal} onClose={closeEditModal} />
+      <Edit
+        visible={isOpenEditModal}
+        onClose={closeEditModal}
+        user={selected}
+      />
+
       <Delete visible={isOpenDeleteModal} onClose={closeDeleteModal} />
     </>
   );

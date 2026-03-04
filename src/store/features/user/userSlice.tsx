@@ -28,7 +28,6 @@ export const userSlice = createSlice({
     fetchUsersSuccess: (state, action: PayloadActions["FetchUsersSuccess"]) => {
       state.loading = false;
       state.users = action.payload.data;
-      console.log(action);
     },
     setCreateUserRequest: (
       state,
@@ -42,7 +41,6 @@ export const userSlice = createSlice({
     ) => {
       const newUser = action.payload.user;
       state.users = [newUser, ...state.users];
-      console.log("TESTE PAYLOAD:", action);
     },
   },
 });
