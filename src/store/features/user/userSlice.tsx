@@ -64,6 +64,28 @@ export const userSlice = createSlice({
 
       state.users = newlist;
     },
+    setDeleteUserRequest: (
+      state,
+      _action: PayloadActions["setDeleteUserRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setDeleteUserSuccess: (
+      state,
+      action: PayloadActions["setDeleteUserSuccess"],
+    ) => {
+      const currentState = current(state);
+      const users = currentState.users;
+      const userDelete = action.payload.user;
+      const newlist = users.map((user) => {
+        if (user.id === userDelete.id) {
+          return userDelete;
+        }
+        return user;
+      });
+
+      state.users = newlist;
+    },
   },
 });
 
@@ -74,6 +96,8 @@ export const {
   setCreateUserSuccess,
   setEditUserResquest,
   setEditUserSuccess,
+  setDeleteUserRequest,
+  setDeleteUserSuccess,
 } = userSlice.actions;
 
 export default userSlice.reducer;

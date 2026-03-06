@@ -33,6 +33,11 @@ export type EditUserPayload = {
   user: User;
 };
 
+export type DeleteUserPayload = {
+  id: string;
+  user: User;
+};
+
 export type PayloadActions = {
   SetCreateUserRequest: {
     type: string;
@@ -55,6 +60,18 @@ export type PayloadActions = {
     };
   };
   setEditUserSuccess: {
+    type: string;
+    payload: {
+      user: User;
+    };
+  };
+  setDeleteUserRequest: {
+    type: string;
+    payload: {
+      user: User;
+    };
+  };
+  setDeleteUserSuccess: {
     type: string;
     payload: {
       user: User;
