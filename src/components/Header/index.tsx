@@ -1,13 +1,19 @@
-function Header () {
+import "./styles.css";
+
+function Header() {
   return (
-    <div className='header-div'
-     >
-     <div className='space'>
-        <img className='logo' src={"../src/logo.jpeg"} alt="logo" />
-        <p>LOGIN</p>
-     </div>
-     </div>
-  )
+    <header className="header-container">
+      <div className="header-content">
+        <div className="logo-section">
+          <span className="brand-name">Carool sistemas</span>
+        </div>
+
+        <div className="user-section">
+          <button className="login-btn">LOGIN</button>
+        </div>
+      </div>
+    </header>
+  );
 }
 
-export default Header
+export default Header;

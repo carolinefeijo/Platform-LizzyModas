@@ -1,0 +1,79 @@
+:root {
+  --sidebar-width: 200px;
+  --sidebar-collapsed-width: 70px; /* Um pouco maior para centralizar bem os ícones */
+  --primary-color: #edaee4;
+  --bg-color: #ffffff;
+  --text-color: #0e0f12;
+  --hover-color: #fff0fd; /* Rosa bem clarinho para o hover */
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--bg-color);
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0.8rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden; /* Impede o texto de aparecer fora da barra */
+  z-index: 1000;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  margin-bottom: 2.5rem;
+  color: var(--primary-color);
+  min-width: 200px;
+}
+
+.logo h2 {
+  font-size: 1.1rem;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border-left: 1px solid transparent;
+}
+
+.navLink:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+}
+
+.navLink.active {
+  background-color: var(--hover-color);
+  color: #d184c5;
+  border-left: 4px solid var(--primary-color);
+  font-weight: 600;
+}
+
+.navLink svg {
+  min-width: 20px;
+}

@@ -10,6 +10,7 @@ import Edit from "./modals/edit";
 import Delete from "./modals/delete";
 import type { User } from "../../store/features/user/types";
 import "./styles.css";
+import View from "./modals/view";
 
 function Users() {
   const dispatch = useDispatch();
@@ -17,8 +18,10 @@ function Users() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenViewModal, setIsOpenViewModal] = useState(false);
   const [selected, setSelected] = useState<User | null>(null);
   const [userDeleted, setUserDeleted] = useState<User | null>(null);
+  const [userSelectedView, setUserSelecetedView] = useState<User | null>(null);
 
   // abrir modal
   const openModal = () => {
@@ -50,6 +53,16 @@ function Users() {
   //fechar modal de deletar
   const closeDeleteModal = () => {
     setIsOpenDeleteModal(false);
+  };
+
+  // abrir modal e ver usuario
+  const openViewUserModal = (user: User) => {
+    setUserSelecetedView(user);
+    setIsOpenViewModal(true);
+  };
+
+  const closeViewUserModal = () => {
+    setIsOpenViewModal(false);
   };
 
   useEffect(() => {
@@ -84,7 +97,12 @@ function Users() {
               </div>
 
               <div className="actionsContainer">
-                <button className="primaryButton">Ver</button>
+                <button
+                  className="primaryButton"
+                  onClick={() => openViewUserModal(user)}
+                >
+                  Ver
+                </button>
                 <button
                   className="primaryButton"
                   onClick={() => openEditModal(user)}
@@ -102,6 +120,11 @@ function Users() {
           ))}
         </div>
       </div>
+      <View
+        visible={isOpenViewModal}
+        onClose={closeViewUserModal}
+        user={userSelectedView}
+      />
       <Create visible={isOpenModal} onClose={closeModal} />
       <Edit
         visible={isOpenEditModal}

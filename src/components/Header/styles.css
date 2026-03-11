@@ -1,0 +1,60 @@
+.header-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  /* Ocupa a largura total menos o espaço da sidebar fechada */
+  left: 65px;
+  height: 60px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 900; /* Abaixo da sidebar que é 1000 */
+  transition: left 0.3s ease;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo {
+  height: 35px;
+  width: 35px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.brand-name {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.login-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+}
+
+.login-btn:hover {
+  background-color: #d184c5; /* Rosa um pouco mais escuro */
+  transform: translateY(-1px);
+}

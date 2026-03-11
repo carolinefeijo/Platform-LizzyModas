@@ -1,25 +1,35 @@
-.header-div {
-display: flex;
-align-items: center;
-justify-content: center;
-width: 100%;
-min-height: 50px;
-}
-
-body{
-  margin: 0;
-}
-
 .logo {
   width: 100px;
-  
 }
 
-.space {
-  display: flex;
-  width: 97%;
-  align-items: center;
-  margin-top: 20px;
-  justify-content: space-between;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+.app-layout {
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 70px;
+  padding: 30px;
+  background-color: #fafafa;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  margin-left: 65px; /* Alinhado com a sidebar fechada */
+  padding-top: 80px; /* Espaço para o Header (60px) + um respiro (20px) */
+  padding-left: 30px;
+  padding-right: 30px;
 }
