@@ -5,6 +5,21 @@ export type User = {
   phone: string | null;
 };
 
+export type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  createdAt: string;
+  updatedAt: string;
+  createdById: number;
+  createdBy: {
+    id: number;
+    name: string;
+    email: string;
+  };
+};
+
 type UserMeta = {
   total: number;
   page: number;
@@ -14,6 +29,11 @@ type UserMeta = {
 
 export type UserResponse = {
   data: User[];
+  meta: UserMeta;
+};
+
+export type ProductsResponse = {
+  data: Product[];
   meta: UserMeta;
 };
 
@@ -75,5 +95,9 @@ export type PayloadActions = {
     payload: {
       id: number;
     };
+  };
+  FetchProductsSuccess: {
+    type: string;
+    payload: ProductsResponse;
   };
 };

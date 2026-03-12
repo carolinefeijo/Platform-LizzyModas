@@ -1,0 +1,58 @@
+.container {
+  margin: 20px;
+  margin-top: 50px;
+}
+
+.header {
+  display: flex;
+  gap: 5rem;
+  align-items: center;
+}
+
+/* Reutilizando o estilo dos botões */
+.primaryButton {
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #c56cb8;
+  background-color: #edaee4;
+  color: #080808;
+  padding: 5px 10px;
+  transition: opacity 0.2s;
+}
+
+.primaryButton:hover {
+  opacity: 0.8;
+}
+
+.userList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.userRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px;
+}
+
+.userInfoField {
+  display: flex;
+  width: 250px;
+  background-color: #eee;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 10px;
+}
+
+.actionsContainer {
+  display: flex;
+  width: 250px;
+  flex-direction: row;
+  gap: 10px;
+}

@@ -9,8 +9,8 @@ import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete";
 import type { User } from "../../store/features/user/types";
-import "./styles.css";
 import View from "./modals/view";
+import "./styles.css";
 
 function Users() {
   const dispatch = useDispatch();
