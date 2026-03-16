@@ -57,58 +57,69 @@ function Edit({
   }
 
   return (
-    <Modal title="Editar usuario" onClose={handleOnClose} visible={visible}>
-      <p>Conteúdo do Modal</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (error) setError("");
-          }}
-        />
+    <Modal title="Editar Colaborador" onClose={handleOnClose} visible={visible}>
+      <div className="modal-form">
+        <p className="modal-subtitle">
+          Altere as informações necessárias abaixo.
+        </p>
 
-        {!isEmailValid && email.length > 0 && (
-          <span style={{ color: "red", fontSize: "12px" }}>
-            Email inválido.
-          </span>
-        )}
+        <div className="form-group">
+          <label>Nome Completo</label>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="Nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="tel"
-          placeholder="Telefone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+        <div className="form-group">
+          <label>E-mail Corporativo</label>
+          <input
+            type="email"
+            className={`form-input ${!isEmailValid && email.length > 0 ? "error" : ""}`}
+            placeholder="email@empresa.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError("");
+            }}
+          />
+          {!isEmailValid && email.length > 0 && (
+            <span className="helper-text error">E-mail inválido.</span>
+          )}
+        </div>
+
+        <div className="form-group">
+          <label>Telefone</label>
+          <input
+            type="tel"
+            className="form-input"
+            placeholder="(00) 00000-0000"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+
+        {error && <div className="alert-error">{error}</div>}
+
+        <div className="modal-footer">
+          <button className="btn-cancel" onClick={onClose}>
+            Cancelar
+          </button>
+          <button
+            className="btn-submit"
+            disabled={!canSubmit}
+            onClick={() => {
+              handleEdit();
+              handleOnClose();
+            }}
+          >
+            Salvar Alterações
+          </button>
+        </div>
       </div>
-
-      <button
-        disabled={!canSubmit}
-        style={{
-          marginTop: "10px",
-          padding: "10px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: canSubmit ? "pointer" : "not-allowed",
-          opacity: canSubmit ? 1 : 0.5,
-        }}
-        onClick={() => {
-          handleEdit();
-          handleOnClose();
-        }}
-      >
-        Editar
-      </button>
     </Modal>
   );
 }

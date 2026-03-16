@@ -4,139 +4,151 @@ import {
   fetchUsersRequest,
   type UserState,
 } from "../../store/features/user/userSlice";
-import Header from "../../components/Header";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete";
-import type { User } from "../../store/features/user/types";
 import View from "./modals/view";
+import type { User } from "../../store/features/user/types";
+import {
+  FiMail,
+  FiPhone,
+  FiEdit,
+  FiTrash2,
+  FiEye,
+  FiPlus,
+} from "react-icons/fi";
 import "./styles.css";
 
 function Users() {
   const dispatch = useDispatch();
   const { users } = useSelector((state: { user: UserState }) => state.user);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenViewModal, setIsOpenViewModal] = useState(false);
+
   const [selected, setSelected] = useState<User | null>(null);
   const [userDeleted, setUserDeleted] = useState<User | null>(null);
   const [userSelectedView, setUserSelecetedView] = useState<User | null>(null);
 
-  // abrir modal
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
-
-  // fechar modal
-  const closeModal = () => {
-    setIsOpenModal(false);
-  };
-
-  // fechar modal de edição
-  const closeEditModal = () => {
-    setIsOpenEditModal(false);
-  };
-
-  // abrir modal de edicao
-  const openEditModal = (user: User) => {
-    setSelected(user);
-    setIsOpenEditModal(true);
-  };
-
-  //abrir modal de deletar
-  const openDeleteModal = (user: User) => {
-    setUserDeleted(user);
-    setIsOpenDeleteModal(true);
-  };
-
-  //fechar modal de deletar
-  const closeDeleteModal = () => {
-    setIsOpenDeleteModal(false);
-  };
-
-  // abrir modal e ver usuario
-  const openViewUserModal = (user: User) => {
-    setUserSelecetedView(user);
-    setIsOpenViewModal(true);
-  };
-
-  const closeViewUserModal = () => {
-    setIsOpenViewModal(false);
-  };
-
   useEffect(() => {
     dispatch(fetchUsersRequest());
-  }, []);
+  }, [dispatch]);
+
+  const handleAction = (e: React.MouseEvent, action: () => void) => {
+    e.preventDefault();
+    e.stopPropagation();
+    action();
+  };
 
   return (
-    <>
-      <Header />
-
-      <div className="container">
-        <div className="header">
-          <h2>Total de colaboradores</h2>
-          <button className="primaryButton" onClick={openModal}>
-            CRIAR USUARIO
-          </button>
+    <div className="container-users">
+      <div className="header">
+        <div>
+          <h2>Colaboradores</h2>
+          <p className="subtitle">Gerencie os acessos da sua equipe</p>
         </div>
+        <button className="btn-create" onClick={() => setIsOpenModal(true)}>
+          <FiPlus /> NOVO USUÁRIO
+        </button>
+      </div>
 
-        <div className="userList">
-          {users?.map((user) => (
-            <div className="userRow " key={user.id}>
-              <div className="userInfoField">
-                <p>{user.name}</p>
+      <div className="accordion-list">
+        {users?.map((user) => (
+          <details className="accordion-item" key={user.id}>
+            <summary className="accordion-header">
+              <div className="info-main">
+                <div className="avatar-circle">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-basic-info">
+                  <span className="user-name">{user.name}</span>
+                  <span className="user-email-sm">{user.email}</span>
+                </div>
               </div>
 
-              <div className="userInfoField">
-                <p>{user.email || "--"}</p>
+              <div className="actions-group">
+                <button
+                  className="icon-button view"
+                  title="Visualizar"
+                  onClick={(e) =>
+                    handleAction(e, () => {
+                      setUserSelecetedView(user);
+                      setIsOpenViewModal(true);
+                    })
+                  }
+                >
+                  <FiEye />
+                </button>
+                <button
+                  className="icon-button edit"
+                  title="Editar"
+                  onClick={(e) =>
+                    handleAction(e, () => {
+                      setSelected(user);
+                      setIsOpenEditModal(true);
+                    })
+                  }
+                >
+                  <FiEdit />
+                </button>
+                <button
+                  className="icon-button delete"
+                  title="Deletar"
+                  onClick={(e) =>
+                    handleAction(e, () => {
+                      setUserDeleted(user);
+                      setIsOpenDeleteModal(true);
+                    })
+                  }
+                >
+                  <FiTrash2 />
+                </button>
+                <span className="chevron">▾</span>
               </div>
+            </summary>
 
-              <div className="userInfoField">
-                <p>{user.phone || "--"}</p>
-              </div>
-
-              <div className="actionsContainer">
-                <button
-                  className="primaryButton"
-                  onClick={() => openViewUserModal(user)}
-                >
-                  Ver
-                </button>
-                <button
-                  className="primaryButton"
-                  onClick={() => openEditModal(user)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="primaryButton"
-                  onClick={() => openDeleteModal(user)}
-                >
-                  Deletar
-                </button>
+            <div className="accordion-content">
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <FiMail className="detail-icon" />
+                  <div>
+                    <label>E-mail</label>
+                    <p>{user.email || "--"}</p>
+                  </div>
+                </div>
+                <div className="detail-item">
+                  <FiPhone className="detail-icon" />
+                  <div>
+                    <label>Telefone</label>
+                    <p>{user.phone || "--"}</p>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </details>
+        ))}
       </div>
+
+      {/* Modais */}
       <View
         visible={isOpenViewModal}
-        onClose={closeViewUserModal}
+        onClose={() => setIsOpenViewModal(false)}
         user={userSelectedView}
       />
-      <Create visible={isOpenModal} onClose={closeModal} />
+      <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
       <Edit
         visible={isOpenEditModal}
-        onClose={closeEditModal}
+        onClose={() => setIsOpenEditModal(false)}
         user={selected}
       />
       <Delete
         visible={isOpenDeleteModal}
-        onClose={closeDeleteModal}
+        onClose={() => setIsOpenDeleteModal(false)}
         user={userDeleted}
       />
-    </>
+    </div>
   );
 }
 

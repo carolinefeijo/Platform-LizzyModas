@@ -2,7 +2,6 @@
   position: fixed;
   top: 0;
   right: 0;
-  /* Ocupa a largura total menos o espaço da sidebar fechada */
   left: 65px;
   height: 60px;
   background-color: #ffffff;
@@ -55,6 +54,6 @@
 }
 
 .login-btn:hover {
-  background-color: #d184c5; /* Rosa um pouco mais escuro */
+  background-color: #d184c5;
   transform: translateY(-1px);
 }

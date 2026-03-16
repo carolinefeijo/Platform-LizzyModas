@@ -1,58 +1,198 @@
-.container {
-  margin: 20px;
-  margin-top: 50px;
+.container-users {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 .header {
   display: flex;
-  gap: 5rem;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 2rem;
 }
 
-/* Reutilizando o estilo dos botões */
-.primaryButton {
+.header h2 {
+  margin: 0;
+  color: #1a1a1a;
+}
+.subtitle {
+  color: #666;
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+}
+
+.btn-create {
+  background: #d184c5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  border-radius: 5px;
-  border: 1px solid #c56cb8;
-  background-color: #edaee4;
-  color: #080808;
-  padding: 5px 10px;
-  transition: opacity 0.2s;
+  transition: background 0.2s;
 }
 
-.primaryButton:hover {
-  opacity: 0.8;
+.btn-create:hover {
+  background: #d184c5;
 }
 
-.userList {
+.accordion-list {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  list-style: none;
+  transition: background 0.2s;
+}
+
+.accordion-header::-webkit-details-marker {
+  display: none;
+}
+.accordion-header:hover {
+  background: #f9fafb;
+}
+
+.info-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  background: #ecdbea;
+  color: #d184c5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.user-basic-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
+}
+.user-name {
+  font-weight: 600;
+  color: #111827;
+}
+.user-email-sm {
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
-.userRow {
+.actions-group {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 5px;
+  gap: 0.5rem;
 }
 
-.userInfoField {
+/* Botões de Ação */
+.icon-button {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
   display: flex;
-  width: 250px;
-  background-color: #eee;
-  border-radius: 5px;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0 10px;
+  transition: all 0.2s;
 }
 
-.actionsContainer {
+.icon-button.view {
+  color: #6b7280;
+}
+.icon-button.edit {
+  color: #d780ca;
+}
+.icon-button.delete {
+  color: #dc2626;
+}
+
+.icon-button:hover {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+.chevron {
+  margin-left: 8px;
+  color: #9ca3af;
+  transition: transform 0.3s;
+}
+
+.accordion-item[open] .chevron {
+  transform: rotate(180deg);
+}
+
+/* Conteúdo Expandido */
+.accordion-content {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  animation: slideDown 0.3s ease-out;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.detail-item {
   display: flex;
-  width: 250px;
-  flex-direction: row;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.detail-icon {
+  color: #9ca3af;
+  margin-top: 4px;
+}
+.detail-item label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.detail-item p {
+  margin: 0;
+  font-weight: 500;
+  color: #374151;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

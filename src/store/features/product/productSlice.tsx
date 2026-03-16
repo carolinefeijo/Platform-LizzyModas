@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadActions, Product } from "../user/types";
+import type { PayloadActions, Product } from "./types";
 
 export interface ProductState {
   loading: boolean;
@@ -30,10 +31,27 @@ export const productSlice = createSlice({
       state.loading = false;
       state.products = action.payload.data;
     },
+    setCreateProductRequest: (
+      state,
+      _action: PayloadActions["setCreateProductRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setCreateProductSuccess: (
+      state,
+      action: PayloadActions["setCreateProductSuccess"],
+    ) => {
+      const newProduct = action.payload.product;
+      state.products = [newProduct, ...state.products];
+    },
   },
 });
 
-export const { fetchProductsRequest, fetchProductsSuccess } =
-  productSlice.actions;
+export const {
+  fetchProductsRequest,
+  fetchProductsSuccess,
+  setCreateProductRequest,
+  setCreateProductSuccess,
+} = productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,58 +1,177 @@
+:root {
+  --primary: #007bff;
+  --success: #edaee4;
+  --danger: #dc3545;
+  --gray-light: #f8f9fa;
+  --border-color: #dee2e6;
+  --text-main: #333;
+}
+
 .container {
-  margin: 20px;
-  margin-top: 50px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-main);
 }
 
-.header {
+.header-actions {
   display: flex;
-  gap: 5rem;
-  align-items: center;
-}
-
-/* Reutilizando o estilo dos botões */
-.primaryButton {
-  cursor: pointer;
-  border-radius: 5px;
-  border: 1px solid #c56cb8;
-  background-color: #edaee4;
-  color: #080808;
-  padding: 5px 10px;
-  transition: opacity 0.2s;
-}
-
-.primaryButton:hover {
-  opacity: 0.8;
-}
-
-.userList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.userRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 5px;
-}
-
-.userInfoField {
-  display: flex;
-  width: 250px;
-  background-color: #eee;
-  border-radius: 5px;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0 10px;
+  margin-bottom: 1.5rem;
 }
 
-.actionsContainer {
+.header-actions h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.btn-create {
+  background-color: var(--success);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
   display: flex;
-  width: 250px;
-  flex-direction: row;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition:
+    filter 0.2s,
+    transform 0.1s;
+}
+
+.btn-create:hover {
+  filter: brightness(0.9);
+}
+
+.btn-create:active {
+  transform: scale(0.98);
+}
+
+.accordion-list {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  list-style: none;
+  transition: background 0.2s;
+}
+
+.accordion-header::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-header:hover {
+  background-color: var(--gray-light);
+}
+
+.info-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.product-id {
+  background: #eee;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.product-name {
+  font-weight: 500;
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon.edit {
+  color: #d780ca;
+}
+
+.btn-icon.edit:hover {
+  background-color: #e7f1ff;
+  border-color: #cfe2ff;
+}
+
+.btn-icon.delete {
+  color: var(--danger);
+}
+
+.btn-icon.delete:hover {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+}
+
+.chevron {
+  font-size: 1.2rem;
+  color: #bbb;
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+.accordion-item[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  padding: 1.2rem;
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+  font-size: 0.95rem;
+  color: #555;
+  animation: slideDown 0.3s ease-out;
+}
+
+.accordion-content p {
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

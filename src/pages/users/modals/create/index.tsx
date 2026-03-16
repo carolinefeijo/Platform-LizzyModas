@@ -55,68 +55,71 @@ function Create({
   };
 
   return (
-    <Modal title="Criar usuario" onClose={handleOnClose} visible={visible}>
-      <p>Conteúdo do Modal</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (error) setError("");
-          }}
-        />
+    <Modal title="Criar novo usuário" onClose={handleOnClose} visible={visible}>
+      <div className="modal-form">
+        <p className="modal-subtitle">
+          Preencha as informações do novo colaborador.
+        </p>
 
-        {!isEmailValid && email.length > 0 && (
-          <span style={{ color: "pink", fontSize: "13px" }}>
-            Email inválido.
-          </span>
-        )}
+        <div className="form-group">
+          <label>Nome Completo</label>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="Ex: João Silva"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="tel"
-          placeholder="Telefone (DDD + Número)"
-          value={phone}
-          onChange={handlePhoneChange}
-        />
+        <div className="form-group">
+          <label>E-mail</label>
+          <input
+            type="text"
+            className={`form-input ${!isEmailValid && email.length > 0 ? "error" : ""}`}
+            placeholder="exemplo@email.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError("");
+            }}
+          />
+          {!isEmailValid && email.length > 0 && (
+            <span className="helper-text error">E-mail inválido.</span>
+          )}
+        </div>
 
-        {!isPhoneComplete && phone.length > 0 && (
-          <span style={{ color: "pink", fontSize: "13px" }}>
-            Digite o DDD e os 9 dígitos.
-          </span>
-        )}
+        <div className="form-group">
+          <label>Telefone</label>
+          <input
+            type="tel"
+            className={`form-input ${!isPhoneComplete && phone.length > 0 ? "error" : ""}`}
+            placeholder="(00) 00000-0000"
+            value={phone}
+            onChange={handlePhoneChange}
+          />
+          {!isPhoneComplete && phone.length > 0 && (
+            <span className="helper-text error">
+              DDD + 9 dígitos necessários.
+            </span>
+          )}
+        </div>
+
+        {error && <div className="alert-error">{error}</div>}
+
+        <div className="modal-footer">
+          <button className="btn-cancel" onClick={handleOnClose}>
+            Cancelar
+          </button>
+          <button
+            className="btn-submit"
+            disabled={!canSubmit}
+            onClick={handleCreate}
+          >
+            Cadastrar Usuário
+          </button>
+        </div>
       </div>
-
-      {error && (
-        <span style={{ color: "red", marginTop: "10px" }}>{error}</span>
-      )}
-
-      <button
-        disabled={!canSubmit}
-        style={{
-          marginTop: "10px",
-          padding: "10px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: canSubmit ? "pointer" : "not-allowed",
-          opacity: canSubmit ? 1 : 0.5,
-        }}
-        onClick={() => {
-          handleCreate();
-          handleOnClose();
-        }}
-      >
-        Criar
-      </button>
     </Modal>
   );
 }
