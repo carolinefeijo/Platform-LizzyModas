@@ -1,44 +1,60 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setCreateProductRequest } from "../../../../store/features/product/productSlice";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
+import { useDispatch } from "react-redux";
+import type { Product } from "../../../../store/features/product/types";
+import { setEditProductResquest } from "../../../../store/features/product/productSlice";
 import "./styles.css";
 
-function Create({
+function Edit({
   visible,
   onClose,
+  product,
 }: {
   visible: boolean;
   onClose: () => void;
+  product: Product | null;
 }) {
   const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
-  const [error, setError] = useState("");
 
   const handleOnClose = () => {
-    setName("");
-    setDescription("");
-    setPrice(0);
-    setError("");
     onClose();
   };
 
-  const handleCreate = () => {
-    dispatch(
-      setCreateProductRequest({
-        name,
-        description,
-        price,
-        createdById: 58,
-      }),
-    );
-    handleOnClose();
+  const updateState = () => {
+    if (!product) return;
+    setName(product.name);
+    setDescription(product.description);
+    setPrice(product.price);
   };
 
+  const handleEdit = () => {
+    if (!product) return;
+
+    const newProduct: Partial<Product> = {
+      name,
+      description,
+      price,
+      id: product.id,
+    };
+    dispatch(setEditProductResquest({ product: newProduct }));
+  };
+
+  useEffect(() => {
+    updateState();
+  }, [product]);
+
+  if (!product) {
+    return null;
+  }
+
   return (
-    <Modal title="Criar novo produto" onClose={handleOnClose} visible={visible}>
+    <Modal title="Editar Colaborador" onClose={handleOnClose} visible={visible}>
       <div className="modal-form">
         <p className="modal-subtitle">
           Preencha as informações do novo produto.
@@ -79,14 +95,18 @@ function Create({
           />
         </div>
 
-        {error && <div className="alert-error">{error}</div>}
-
         <div className="modal-footer">
           <button className="btn-cancel" onClick={handleOnClose}>
             Cancelar
           </button>
-          <button className="btn-submit" onClick={() => handleCreate()}>
-            Cadastrar produto
+          <button
+            className="btn-submit"
+            onClick={() => {
+              handleEdit();
+              handleOnClose();
+            }}
+          >
+            Atualizar produto
           </button>
         </div>
       </div>
@@ -94,4 +114,4 @@ function Create({
   );
 }
 
-export default Create;
+export default Edit;

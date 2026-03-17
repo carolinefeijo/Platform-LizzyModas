@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import type { Product } from "../../store/features/product/types";
 import {
   fetchProductsRequest,
   type ProductState,
 } from "../../store/features/product/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
-import "./styles.css";
 import Create from "./modals/create";
+import Edit from "./modals/edit";
+import "./styles.css";
 
 function Products() {
   const dispatch = useDispatch();
@@ -15,6 +17,9 @@ function Products() {
   );
 
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+
+  const [selected, setSelected] = useState<Product | null>(null);
 
   useEffect(() => {
     dispatch(fetchProductsRequest());
@@ -41,7 +46,13 @@ function Products() {
               </div>
 
               <div className="action-group">
-                <button className="btn-icon edit">
+                <button
+                  className="btn-icon edit"
+                  onClick={() => {
+                    setSelected(product);
+                    setIsOpenEditModal(true);
+                  }}
+                >
                   <FiEdit2 size={16} />
                 </button>
                 <button className="btn-icon delete">
@@ -62,6 +73,11 @@ function Products() {
       </div>
 
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
+      <Edit
+        visible={isOpenEditModal}
+        onClose={() => setIsOpenEditModal(false)}
+        product={selected}
+      />
     </div>
   );
 }

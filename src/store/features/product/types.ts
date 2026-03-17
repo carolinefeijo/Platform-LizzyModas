@@ -32,6 +32,11 @@ export type CreateProductPayload = {
   createdById: number;
 };
 
+export type EditProductPayload = {
+  id: string;
+  product: Product;
+};
+
 export type PayloadActions = {
   FetchProductsSuccess: {
     type: string;
@@ -44,6 +49,18 @@ export type PayloadActions = {
   };
 
   setCreateProductSuccess: {
+    type: string;
+    payload: {
+      product: Product;
+    };
+  };
+  setEditProductRequest: {
+    type: string;
+    payload: {
+      product: Partial<Product>;
+    };
+  };
+  setEditProductSuccess: {
     type: string;
     payload: {
       product: Product;
