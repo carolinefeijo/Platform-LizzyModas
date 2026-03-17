@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
 import { useDispatch } from "react-redux";
@@ -20,44 +19,73 @@ function Edit({
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
+  const [priceText, setPriceText] = useState("");
+  const [error, setError] = useState("");
 
-  const handleOnClose = () => {
-    onClose();
+  const onlyDigits = (s: string) => s.replace(/\D/g, "");
+
+  const formatBRL = (digits: string) => {
+    if (!digits) return "";
+    const numberValue = parseInt(digits, 10);
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(numberValue / 100);
+  };
+
+  const parseToNumber = (value: string) => {
+    const digits = onlyDigits(value);
+    return digits ? parseInt(digits, 10) : 0;
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = onlyDigits(e.target.value);
+    if (digits.length > 12) return;
+    setPriceText(digits === "" ? "" : formatBRL(digits));
   };
 
   const updateState = () => {
     if (!product) return;
     setName(product.name);
     setDescription(product.description);
-    setPrice(product.price);
+
+    const initialPriceDigits = product.price.toString();
+    setPriceText(formatBRL(initialPriceDigits));
+    setError("");
   };
 
   const handleEdit = () => {
     if (!product) return;
 
+    if (!name || !priceText) {
+      setError("Nome e preço são obrigatórios.");
+      return;
+    }
+
     const newProduct: Partial<Product> = {
+      id: product.id,
       name,
       description,
-      price,
-      id: product.id,
+      price: parseToNumber(priceText),
     };
+
     dispatch(setEditProductResquest({ product: newProduct }));
+    onClose();
   };
 
   useEffect(() => {
-    updateState();
-  }, [product]);
+    if (visible) {
+      updateState();
+    }
+  }, [product, visible]);
 
-  if (!product) {
-    return null;
-  }
+  if (!product) return null;
 
   return (
-    <Modal title="Editar Colaborador" onClose={handleOnClose} visible={visible}>
+    <Modal title="Editar Produto" onClose={onClose} visible={visible}>
       <div className="modal-form">
         <p className="modal-subtitle">
-          Preencha as informações do novo produto.
+          Altere as informações do produto abaixo.
         </p>
 
         <div className="form-group">
@@ -76,36 +104,37 @@ function Edit({
           <input
             type="text"
             className="form-input"
-            placeholder="ex: uma mesa grande e espaçosa"
+            placeholder="Ex: uma mesa grande"
             value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
         <div className="form-group">
           <label>Preço</label>
           <input
-            type="number"
+            type="text"
             className="form-input"
-            placeholder="$45,00"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            placeholder="R$ 0,00"
+            value={priceText}
+            onChange={handlePriceChange}
           />
         </div>
 
+        {error && (
+          <div
+            className="alert-error"
+            style={{ color: "red", marginTop: "10px" }}
+          >
+            {error}
+          </div>
+        )}
+
         <div className="modal-footer">
-          <button className="btn-cancel" onClick={handleOnClose}>
+          <button className="btn-cancel" onClick={onClose}>
             Cancelar
           </button>
-          <button
-            className="btn-submit"
-            onClick={() => {
-              handleEdit();
-              handleOnClose();
-            }}
-          >
+          <button className="btn-submit" onClick={handleEdit}>
             Atualizar produto
           </button>
         </div>

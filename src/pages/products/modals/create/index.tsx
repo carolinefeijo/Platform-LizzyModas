@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCreateProductRequest } from "../../../../store/features/product/productSlice";
 import Modal from "../../../../components/Modal";
@@ -14,26 +14,62 @@ function Create({
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
+  const [priceText, setPriceText] = useState("");
   const [error, setError] = useState("");
+
+  const onlyDigits = (s: string) => s.replace(/\D/g, "");
+
+  const formatBRL = (digits: string) => {
+    if (!digits) return "";
+
+    const numberValue = parseInt(digits, 10);
+
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(numberValue / 100);
+  };
+
+  const parseToNumber = (value: string) => {
+    const digits = onlyDigits(value);
+    return digits ? parseInt(digits, 10) : 0;
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = onlyDigits(e.target.value);
+    if (digits.length > 12) return;
+    if (digits === "") {
+      setPriceText("");
+    } else {
+      setPriceText(formatBRL(digits));
+    }
+  };
 
   const handleOnClose = () => {
     setName("");
     setDescription("");
-    setPrice(0);
+    setPriceText("");
     setError("");
     onClose();
   };
 
   const handleCreate = () => {
+    if (!name || !priceText) {
+      setError("Por favor, preencha o nome e o preço.");
+      return;
+    }
+
+    const priceInCents = parseToNumber(priceText);
+
     dispatch(
       setCreateProductRequest({
         name,
         description,
-        price,
+        price: priceInCents,
         createdById: 58,
       }),
     );
+
     handleOnClose();
   };
 
@@ -62,30 +98,35 @@ function Create({
             className="form-input"
             placeholder="ex: uma mesa grande e espaçosa"
             value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
         <div className="form-group">
           <label>Preço</label>
           <input
-            type="number"
+            type="text"
             className="form-input"
-            placeholder="$45,00"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            placeholder="R$ 0,00"
+            value={priceText}
+            onChange={handlePriceChange}
           />
         </div>
 
-        {error && <div className="alert-error">{error}</div>}
+        {error && (
+          <div
+            className="alert-error"
+            style={{ color: "red", marginTop: "10px" }}
+          >
+            {error}
+          </div>
+        )}
 
         <div className="modal-footer">
           <button className="btn-cancel" onClick={handleOnClose}>
             Cancelar
           </button>
-          <button className="btn-submit" onClick={() => handleCreate()}>
+          <button className="btn-submit" onClick={handleCreate}>
             Cadastrar produto
           </button>
         </div>
