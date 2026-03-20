@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
+import Delete from "./modals/delete ";
 import "./styles.css";
-import Delete from "./delete ";
+import SearchInput from "../../components/SearchInput";
 
 function Products() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function Products() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [selected, setSelected] = useState<Product | null>(null);
   const [productDeleted, setProductDeleted] = useState<Product | null>(null);
@@ -36,6 +38,12 @@ function Products() {
           <FiPlus /> Novo Produto
         </button>
       </div>
+
+      <SearchInput
+        placeholder="Digite o nome do produto..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       <div className="accordion-list">
         {products?.map((product) => (
