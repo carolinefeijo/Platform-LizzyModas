@@ -9,6 +9,7 @@ import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
 import "./styles.css";
+import Delete from "./delete ";
 
 function Products() {
   const dispatch = useDispatch();
@@ -18,8 +19,10 @@ function Products() {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   const [selected, setSelected] = useState<Product | null>(null);
+  const [productDeleted, setProductDeleted] = useState<Product | null>(null);
 
   useEffect(() => {
     dispatch(fetchProductsRequest());
@@ -55,7 +58,13 @@ function Products() {
                 >
                   <FiEdit2 size={16} />
                 </button>
-                <button className="btn-icon delete">
+                <button
+                  className="btn-icon delete"
+                  onClick={() => {
+                    setProductDeleted(product);
+                    setIsOpenDeleteModal(true);
+                  }}
+                >
                   <FiTrash2 size={16} />
                 </button>
                 <span className="chevron">▾</span>
@@ -77,6 +86,11 @@ function Products() {
         visible={isOpenEditModal}
         onClose={() => setIsOpenEditModal(false)}
         product={selected}
+      />
+      <Delete
+        visible={isOpenDeleteModal}
+        onClose={() => setIsOpenDeleteModal(false)}
+        product={productDeleted}
       />
     </div>
   );

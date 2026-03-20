@@ -37,6 +37,10 @@ export type EditProductPayload = {
   product: Product;
 };
 
+export type DeleteProductPayload = {
+  id: number;
+};
+
 export type PayloadActions = {
   FetchProductsSuccess: {
     type: string;
@@ -64,6 +68,18 @@ export type PayloadActions = {
     type: string;
     payload: {
       product: Product;
+    };
+  };
+  setDeleteProductRequest: {
+    type: string;
+    payload: {
+      id: number;
+    };
+  };
+  setDeleteProductSuccess: {
+    type: string;
+    payload: {
+      id: number;
     };
   };
 };

@@ -96,9 +96,9 @@ function* setDeleteUserSaga(
         id,
       }),
     );
-    toast.success("Usuário deletado com sucesso");
+    toast.success("Usuário deletado com sucesso!");
   } catch {
-    toast.error("erro ao deletado usuário:");
+    toast.error("erro ao deletar usuário!");
   }
 }
 

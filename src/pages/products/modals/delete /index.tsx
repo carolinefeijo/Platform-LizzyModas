@@ -1,16 +1,16 @@
 import Modal from "../../../../components/Modal";
-import type { User } from "../../../../store/features/user/types";
-import { setDeleteUserRequest } from "../../../../store/features/user/userSlice";
+import { setDeleteProductRequest } from "../../../../store/features/product/productSlice";
+import type { Product } from "../../../../store/features/product/types";
 import { useDispatch } from "react-redux";
 
 function Delete({
   visible,
   onClose,
-  user,
+  product,
 }: {
   visible: boolean;
   onClose: () => void;
-  user: User | null;
+  product: Product | null;
 }) {
   const dispatch = useDispatch();
 
@@ -19,34 +19,30 @@ function Delete({
   };
 
   const handleDelete = () => {
-    if (!user) return;
-    dispatch(setDeleteUserRequest({ id: user.id }));
+    if (!product) return;
+    dispatch(setDeleteProductRequest({ id: product.id }));
     handleOnClose();
   };
 
-  if (!user) {
+  if (!product) {
     return null;
   }
 
   return (
-    <Modal
-      title="Excluir colaborador"
-      onClose={handleOnClose}
-      visible={visible}
-    >
+    <Modal title="Excluir produto" onClose={handleOnClose} visible={visible}>
       <div className="modal-form">
         <p className="modal-subtitle">
           Esta ação não pode ser desfeita. Tem certeza que deseja remover este
-          colaborador?
+          produto?
         </p>
 
         <div className="form-group">
-          <label>Usuário selecionado</label>
+          <label>Produto selecionado</label>
           <input
             type="text"
             className="form-input"
-            value={user.name}
-            disabled // Mantém o estilo do input mas impede edição
+            value={product.name}
+            disabled
             style={{ backgroundColor: "#f3f4f6", cursor: "not-allowed" }}
           />
         </div>
@@ -58,7 +54,7 @@ function Delete({
           <button
             className="btn-submit"
             onClick={handleDelete}
-            style={{ backgroundColor: "#ef4444" }} // Vermelho para indicar perigo/exclusão
+            style={{ backgroundColor: "#ef4444" }}
           >
             Confirmar Exclusão
           </button>

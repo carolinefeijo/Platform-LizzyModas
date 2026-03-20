@@ -1,6 +1,6 @@
-import Modal from "../../../../components/Modal";
-import type { User } from "../../../../store/features/user/types";
-import { setDeleteUserRequest } from "../../../../store/features/user/userSlice";
+import Modal from "../../../components/Modal";
+import type { User } from "../../../store/features/user/types";
+import { setDeleteUserRequest } from "../../../store/features/user/userSlice";
 import { useDispatch } from "react-redux";
 
 function Delete({

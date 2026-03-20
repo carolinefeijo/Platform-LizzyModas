@@ -1,11 +1,17 @@
 import api from "../../../api";
 import { call, put, takeLatest } from "redux-saga/effects";
-import type { EditProductPayload, ProductsResponse } from "../product/types";
+import type {
+  DeleteProductPayload,
+  EditProductPayload,
+  ProductsResponse,
+} from "../product/types";
 import {
   fetchProductsRequest,
   fetchProductsSuccess,
   setCreateProductRequest,
   setCreateProductSuccess,
+  setDeleteProductRequest,
+  setDeleteProductSuccess,
   setEditProductResquest,
   setEditProductSuccess,
 } from "./productSlice";
@@ -73,8 +79,28 @@ function* setEditProductSaga(
   }
 }
 
+// deletar produto
+function* setDeleteProductSaga(
+  action: PayloadAction<DeleteProductPayload>,
+): Generator {
+  try {
+    const id = action.payload.id;
+
+    yield call(api.delete, `/products/${id}`);
+    yield put(
+      setDeleteProductSuccess({
+        id,
+      }),
+    );
+    toast.success("Produto deletado com sucesso!");
+  } catch {
+    toast.error("erro ao deletar produto:");
+  }
+}
+
 export default function* productSaga() {
   yield takeLatest(fetchProductsRequest.type, fetchProductSaga);
   yield takeLatest(setCreateProductRequest.type, setCreateProductSaga);
   yield takeLatest(setEditProductResquest.type, setEditProductSaga);
+  yield takeLatest(setDeleteProductRequest.type, setDeleteProductSaga);
 }

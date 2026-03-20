@@ -65,6 +65,27 @@ export const productSlice = createSlice({
       });
       state.products = newList;
     },
+    setDeleteProductRequest: (
+      state,
+      _action: PayloadActions["setDeleteProductRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setDeleteProductSuccess: (
+      state,
+      action: PayloadActions["setDeleteProductSuccess"],
+    ) => {
+      const currentState = current(state);
+      const products = currentState.products;
+
+      const newList = products.filter((product) => {
+        if (product.id !== action.payload.id) {
+          return product;
+        }
+        return;
+      });
+      state.products = newList;
+    },
   },
 });
 
@@ -75,6 +96,8 @@ export const {
   setCreateProductSuccess,
   setEditProductResquest,
   setEditProductSuccess,
+  setDeleteProductRequest,
+  setDeleteProductSuccess,
 } = productSlice.actions;
 
 export default productSlice.reducer;

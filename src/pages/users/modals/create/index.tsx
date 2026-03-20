@@ -17,7 +17,6 @@ function Create({
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
 
-  // função para formatacao do telefone
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     value = value.replace(/\D/g, "");
