@@ -47,6 +47,11 @@ export type PayloadActions = {
     payload: ProductsResponse;
   };
 
+  FetchProductSearchRequest: {
+    type: string;
+    payload: string;
+  };
+
   setCreateProductRequest: {
     type: string;
     payload: CreateProductPayload;

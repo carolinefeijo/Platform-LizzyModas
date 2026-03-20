@@ -24,6 +24,12 @@ export const productSlice = createSlice({
       state.loading = true;
       state.products = [];
     },
+    fetchProductSearchRequest: (
+      state,
+      _action: PayloadActions["FetchProductSearchRequest"],
+    ) => {
+      state.loading = true;
+    },
     fetchProductsSuccess: (
       state,
       action: PayloadActions["FetchProductsSuccess"],
@@ -98,6 +104,7 @@ export const {
   setEditProductSuccess,
   setDeleteProductRequest,
   setDeleteProductSuccess,
+  fetchProductSearchRequest,
 } = productSlice.actions;
 
 export default productSlice.reducer;

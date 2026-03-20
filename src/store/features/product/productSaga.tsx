@@ -14,6 +14,7 @@ import {
   setDeleteProductSuccess,
   setEditProductResquest,
   setEditProductSuccess,
+  fetchProductSearchRequest,
 } from "./productSlice";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { CreateProductPayload, Product } from "./types";
@@ -98,9 +99,29 @@ function* setDeleteProductSaga(
   }
 }
 
+// buscar no imput um produto usando parametro
+function* fetchProductSearchSaga(action: PayloadAction<string>): Generator {
+  try {
+    const searchTerm = action.payload;
+    const { data: response }: { data: ProductsResponse } = yield call(
+      api.get,
+      "/products",
+      {
+        params: { name: searchTerm },
+      },
+    );
+
+    yield put(fetchProductsSuccess(response));
+  } catch (error) {
+    console.log("Erro na busca:", error);
+    toast.error("Erro ao buscar produto.");
+  }
+}
+
 export default function* productSaga() {
   yield takeLatest(fetchProductsRequest.type, fetchProductSaga);
   yield takeLatest(setCreateProductRequest.type, setCreateProductSaga);
   yield takeLatest(setEditProductResquest.type, setEditProductSaga);
   yield takeLatest(setDeleteProductRequest.type, setDeleteProductSaga);
+  yield takeLatest(fetchProductSearchRequest.type, fetchProductSearchSaga);
 }
