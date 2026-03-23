@@ -10,8 +10,8 @@ import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete ";
-import "./styles.css";
 import SearchInput from "../../components/SearchInput";
+import "./styles.css";
 
 function Products() {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ function Products() {
         onSearch={handleSearch}
       />
       {products?.length === 0 ? (
-        <p>NADA</p>
+        <p>Nada encontrado</p>
       ) : (
         <div className="accordion-list">
           {products?.map((product) => (
