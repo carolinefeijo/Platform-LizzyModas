@@ -1,8 +1,16 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginRequest } from "../../store/features/login/loginSlice";
 import "./styles.css";
 
 function Login() {
-  const handleSubmit = () => {
-    console.log("entrou");
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(loginRequest({ user: { email, password } }));
   };
 
   return (
@@ -13,12 +21,24 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>E-mail</label>
-            <input type="email" placeholder="Digite seu e-mail" required />
+            <input
+              type="email"
+              placeholder="Digite seu e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label>Senha</label>
-            <input type="password" placeholder="Digite sua senha" required />
+            <input
+              type="password"
+              placeholder="Digite sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
 
           <button type="submit" className="btn-login">
