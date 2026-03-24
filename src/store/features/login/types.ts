@@ -3,6 +3,7 @@ export type LoginPayload = {
     email: string;
     password: string;
   };
+  navigate?: (path: string) => void; // Adicione esta linha
 };
 
 export type LoginResponse = {

@@ -6,25 +6,23 @@ import type { LoginPayload } from "./types";
 import { toast } from "react-toastify";
 
 // fazer login
-function* setLoginSaga(action: PayloadAction<LoginPayload>): Generator {
-  try {
-    const { data: response }: { data: LoginPayload } = yield call(
-      api.post,
-      "/login",
-      {
-        email: action.payload.user.email,
-        password: action.payload.user.password,
-      },
-    );
 
-    yield put(loginSuccess(response));
+function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
+  const { user, navigate } = payload;
+  try {
+    const { data } = (yield call(api.post, "/login", user)) as {
+      data: LoginPayload;
+    };
+
+    yield put(loginSuccess(data));
     toast.success("Login realizado com sucesso!");
+
+    yield navigate?.("/home");
   } catch (error) {
-    console.log("Erro no login:", error);
+    console.error("Erro no login:", error);
     toast.error("E-mail ou senha incorretos.");
   }
 }
-
 // token
 
 export default function* loginSaga() {

@@ -1,16 +1,29 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginRequest } from "../../store/features/login/loginSlice";
+
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // 2. Inicialize
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   dispatch(loginRequest({ user: { email, password } }));
+  // };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginRequest({ user: { email, password } }));
+    dispatch(
+      loginRequest({
+        user: { email, password },
+        navigate,
+      }),
+    );
   };
 
   return (
