@@ -1,46 +1,52 @@
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Users from "./pages/users";
 import Sidebar from "./components/SideBar";
 import Products from "./pages/products";
 import Header from "./components/Header";
 import Login from "./pages/login";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuthRequest } from "./store/features/login/loginSlice";
 import "./App.css";
+import type { UserState } from "./store/features/user/userSlice";
 
 function App() {
-  return (
-    <Router>
-      <div className="app-container">
-        <Routes>
-          <Route path="/login" element={<Login />} />
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(
+    (state: { login: UserState }) => state.login,
+  );
 
-          <Route
-            path="/*"
-            element={
-              <>
-                <Sidebar />
-                <div className="content-wrapper">
-                  <Header />
-                  <main className="main-content">
-                    <Routes>
-                      <Route path="/" element={<Navigate to="/home" />} />
-                      <Route path="/home" element={<Home />} />
-                      <Route path="/users" element={<Users />} />
-                      <Route path="/products" element={<Products />} />
-                    </Routes>
-                  </main>
-                </div>
-              </>
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+  useEffect(() => {
+    dispatch(checkAuthRequest());
+  }, [dispatch]);
+
+  return (
+    <BrowserRouter>
+      {isAuthenticated ? (
+        <>
+          <Sidebar />
+          <div className="content-wrapper">
+            <Header />
+            <main className="main-content">
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="*" element={<Navigate to="/home" />} />
+              </Routes>
+            </main>
+          </div>
+        </>
+      ) : (
+        <div className="app-container">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </div>
+      )}
+    </BrowserRouter>
   );
 }
 

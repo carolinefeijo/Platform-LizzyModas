@@ -8,6 +8,7 @@ export interface UserState {
   isSubmitting: boolean;
   users: User[];
   user: User;
+  isAuthenticated: boolean;
 }
 
 const initialState: UserState = {
@@ -15,6 +16,7 @@ const initialState: UserState = {
   users: [],
   isSubmitting: false,
   user: {} as User,
+  isAuthenticated: false,
 };
 
 export const userSlice = createSlice({

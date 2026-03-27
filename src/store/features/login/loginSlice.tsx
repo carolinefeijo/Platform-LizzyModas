@@ -5,27 +5,34 @@ import type { LoginPayload } from "./types";
 export interface LoginState {
   loading: boolean;
   isSubmitting: boolean;
-  //   user: LoginPayload;
+  isAuthenticated: boolean;
 }
 
 const initialState: LoginState = {
   loading: true,
   isSubmitting: false,
+  isAuthenticated: false,
 };
 
 export const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    loginRequest: (state, action: PayloadAction<LoginPayload>) => {
+    loginRequest: (state, _action: PayloadAction<LoginPayload>) => {
       state.loading = true;
+      state.isAuthenticated = false;
     },
-    loginSuccess: (state, action: PayloadAction<LoginPayload>) => {
+    loginSuccess: (state, _action: PayloadAction<LoginPayload>) => {
       state.loading = false;
+      state.isAuthenticated = true;
+    },
+    checkAuthRequest: (state) => {
+      state.loading = true;
     },
   },
 });
 
-export const { loginRequest, loginSuccess } = loginSlice.actions;
+export const { loginRequest, loginSuccess, checkAuthRequest } =
+  loginSlice.actions;
 
 export default loginSlice.reducer;

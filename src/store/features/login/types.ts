@@ -4,7 +4,7 @@ export type LoginPayload = {
     password: string;
     token?: string;
   };
-  navigate?: (path: string) => void; // Adicione esta linha
+  navigate?: (path: string) => void;
 };
 
 export type LoginResponse = {
