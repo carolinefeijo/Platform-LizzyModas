@@ -2,6 +2,7 @@ export type LoginPayload = {
   user: {
     email: string;
     password: string;
+    token?: string;
   };
   navigate?: (path: string) => void; // Adicione esta linha
 };

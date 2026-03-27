@@ -9,8 +9,8 @@ import Users from "./pages/users";
 import Sidebar from "./components/SideBar";
 import Products from "./pages/products";
 import Header from "./components/Header";
-import "./App.css";
 import Login from "./pages/login";
+import "./App.css";
 
 function App() {
   return (

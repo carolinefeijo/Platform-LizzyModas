@@ -5,11 +5,11 @@ function Header() {
     <header className="header-container">
       <div className="header-content">
         <div className="logo-section">
-          <span className="brand-name">Carool sistemas</span>
+          <span className="brand-name">CAROL SISTEMAS</span>
         </div>
 
         <div className="user-section">
-          <button className="login-btn">LOGIN</button>
+          <button className="login-btn">SAIR</button>
         </div>
       </div>
     </header>

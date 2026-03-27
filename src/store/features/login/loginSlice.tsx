@@ -11,7 +11,6 @@ export interface LoginState {
 const initialState: LoginState = {
   loading: true,
   isSubmitting: false,
-  //   user: {} as LoginPayload,
 };
 
 export const loginSlice = createSlice({
