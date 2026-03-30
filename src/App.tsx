@@ -8,8 +8,8 @@ import Login from "./pages/login";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuthRequest } from "./store/features/login/loginSlice";
-import "./App.css";
 import type { UserState } from "./store/features/user/userSlice";
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();

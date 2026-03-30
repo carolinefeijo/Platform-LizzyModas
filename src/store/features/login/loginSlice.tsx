@@ -29,10 +29,14 @@ export const loginSlice = createSlice({
     checkAuthRequest: (state) => {
       state.loading = true;
     },
+    logout: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+    },
   },
 });
 
-export const { loginRequest, loginSuccess, checkAuthRequest } =
+export const { loginRequest, logout, loginSuccess, checkAuthRequest } =
   loginSlice.actions;
 
 export default loginSlice.reducer;

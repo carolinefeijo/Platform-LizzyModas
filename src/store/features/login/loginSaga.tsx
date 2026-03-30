@@ -12,19 +12,21 @@ function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
       data: LoginPayload;
     };
 
-    //  Salva o token no LocalStorage
-    if (data.user.token) {
-      localStorage.setItem("@App:token", data.user.token);
-      if (data.user.token) {
-        localStorage.setItem("@App:token", data.user.token);
+    const token = data.token;
+
+    if (token) {
+      localStorage.setItem("@App:token", token);
+
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+
+      yield put(loginSuccess(data));
+      toast.success("Login realizado com sucesso!");
+
+      if (navigate) {
+        yield call(navigate, "/home");
       }
-    }
-
-    yield put(loginSuccess(data));
-    toast.success("Login realizado com sucesso!");
-
-    if (navigate) {
-      yield call(navigate, "/home");
+    } else {
+      toast.error("Token não recebido do servidor.");
     }
   } catch (error: unknown) {
     const axiosError = error as { response?: { data?: { error?: string } } };
@@ -35,19 +37,21 @@ function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
   }
 }
 
-// Saga para verificar se o usuário já estava logado
 function* checkAuthSaga(): Generator {
   try {
     const token = localStorage.getItem("@App:token");
+
     if (!token) return;
+
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
     const { data } = yield call(api.get, "/me");
     yield put(loginSuccess(data));
   } catch {
     localStorage.removeItem("@App:token");
+    delete api.defaults.headers.Authorization;
   }
 }
-
-// token
 
 export default function* loginSaga() {
   yield takeLatest(loginRequest.type, setLoginSaga);

@@ -1,8 +1,8 @@
 export type LoginPayload = {
+  token?: string;
   user: {
     email: string;
     password: string;
-    token?: string;
   };
   navigate?: (path: string) => void;
 };
