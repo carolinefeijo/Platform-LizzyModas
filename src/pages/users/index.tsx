@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUsersRequest,
+  fetchUserSearchRequest,
   type UserState,
 } from "../../store/features/user/userSlice";
 import Create from "./modals/create";
@@ -18,19 +19,36 @@ import {
   FiPlus,
 } from "react-icons/fi";
 import "./styles.css";
+import SearchInput from "../../components/SearchInput";
+import Loading from "../../components/Loading";
 
 function Users() {
   const dispatch = useDispatch();
-  const { users } = useSelector((state: { user: UserState }) => state.user);
+  const { users, loading } = useSelector(
+    (state: { user: UserState }) => state.user,
+  );
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenViewModal, setIsOpenViewModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [selected, setSelected] = useState<User | null>(null);
   const [userDeleted, setUserDeleted] = useState<User | null>(null);
   const [userSelectedView, setUserSelecetedView] = useState<User | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      dispatch(fetchUserSearchRequest(searchTerm));
+    } else {
+      dispatch(fetchUsersRequest());
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
@@ -46,92 +64,110 @@ function Users() {
     <div className="container-users">
       <div className="header">
         <div>
-          <h2>Colaboradores</h2>
-          <p className="subtitle">Gerencie os acessos da sua equipe</p>
+          <h2>Funcionários</h2>
+          <p className="subtitle">Gerencie os acessos da sua equipe !</p>
         </div>
         <button className="btn-create" onClick={() => setIsOpenModal(true)}>
-          <FiPlus /> NOVO USUÁRIO
+          <FiPlus /> Novo Funcionário
         </button>
       </div>
 
-      <div className="accordion-list">
-        {users?.map((user) => (
-          <details className="accordion-item" key={user.id}>
-            <summary className="accordion-header">
-              <div className="info-main">
-                <div className="avatar-circle">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-basic-info">
-                  <span className="user-name">{user.name}</span>
-                  <span className="user-email-sm">{user.email}</span>
-                </div>
-              </div>
+      <SearchInput
+        placeholder="Digite o nome do funcionário"
+        value={searchTerm}
+        onChange={handleInputChange}
+        onSearch={handleSearch}
+      />
 
-              <div className="actions-group">
-                <button
-                  className="icon-button view"
-                  title="Visualizar"
-                  onClick={(e) =>
-                    handleAction(e, () => {
-                      setUserSelecetedView(user);
-                      setIsOpenViewModal(true);
-                    })
-                  }
-                >
-                  <FiEye />
-                </button>
-                <button
-                  className="icon-button edit"
-                  title="Editar"
-                  onClick={(e) =>
-                    handleAction(e, () => {
-                      setSelected(user);
-                      setIsOpenEditModal(true);
-                    })
-                  }
-                >
-                  <FiEdit />
-                </button>
-                <button
-                  className="icon-button delete"
-                  title="Deletar"
-                  onClick={(e) =>
-                    handleAction(e, () => {
-                      setUserDeleted(user);
-                      setIsOpenDeleteModal(true);
-                    })
-                  }
-                >
-                  <FiTrash2 />
-                </button>
-                <span className="chevron">▾</span>
-              </div>
-            </summary>
+      {loading ? (
+        <div style={{ marginTop: "12rem" }}>
+          <Loading />
+        </div>
+      ) : (
+        <>
+          {users?.length === 0 ? (
+            <p>Nada encontrado</p>
+          ) : (
+            <div className="accordion-list">
+              {users?.map((user) => (
+                <details className="accordion-item" key={user.id}>
+                  <summary className="accordion-header">
+                    <div className="info-main">
+                      <div className="avatar-circle">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="user-basic-info">
+                        <span className="user-name">{user.name}</span>
+                        <span className="user-email-sm">{user.email}</span>
+                      </div>
+                    </div>
 
-            <div className="accordion-content">
-              <div className="detail-grid">
-                <div className="detail-item">
-                  <FiMail className="detail-icon" />
-                  <div>
-                    <label>E-mail</label>
-                    <p>{user.email || "--"}</p>
+                    <div className="actions-group">
+                      <button
+                        className="icon-button view"
+                        title="Visualizar"
+                        onClick={(e) =>
+                          handleAction(e, () => {
+                            setUserSelecetedView(user);
+                            setIsOpenViewModal(true);
+                          })
+                        }
+                      >
+                        <FiEye />
+                      </button>
+                      <button
+                        className="icon-button edit"
+                        title="Editar"
+                        onClick={(e) =>
+                          handleAction(e, () => {
+                            setSelected(user);
+                            setIsOpenEditModal(true);
+                          })
+                        }
+                      >
+                        <FiEdit />
+                      </button>
+                      <button
+                        className="icon-button delete"
+                        title="Deletar"
+                        onClick={(e) =>
+                          handleAction(e, () => {
+                            setUserDeleted(user);
+                            setIsOpenDeleteModal(true);
+                          })
+                        }
+                      >
+                        <FiTrash2 />
+                      </button>
+                      <span className="chevron">▾</span>
+                    </div>
+                  </summary>
+
+                  <div className="accordion-content">
+                    <div className="detail-grid">
+                      <div className="detail-item">
+                        <FiMail className="detail-icon" />
+                        <div>
+                          <label>E-mail</label>
+                          <p>{user.email || "--"}</p>
+                        </div>
+                      </div>
+                      <div className="detail-item">
+                        <FiPhone className="detail-icon" />
+                        <div>
+                          <label>Telefone</label>
+                          <p>{user.phone || "--"}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="detail-item">
-                  <FiPhone className="detail-icon" />
-                  <div>
-                    <label>Telefone</label>
-                    <p>{user.phone || "--"}</p>
-                  </div>
-                </div>
-              </div>
+                </details>
+              ))}
             </div>
-          </details>
-        ))}
-      </div>
+          )}
+        </>
+      )}
 
-      {/* Modais */}
       <View
         visible={isOpenViewModal}
         onClose={() => setIsOpenViewModal(false)}

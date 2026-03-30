@@ -5,9 +5,15 @@ interface SearchInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSearch?: () => void;
+  placeholder?: string;
 }
 
-const SearchInput = ({ value, onChange, onSearch }: SearchInputProps) => {
+const SearchInput = ({
+  value,
+  onChange,
+  onSearch,
+  placeholder,
+}: SearchInputProps) => {
   return (
     <div style={{ marginBottom: "15px" }}>
       <div className="form-group">
@@ -24,7 +30,7 @@ const SearchInput = ({ value, onChange, onSearch }: SearchInputProps) => {
               type="text"
               value={value}
               onChange={onChange}
-              placeholder="Digite o nome do produto..."
+              placeholder={placeholder}
               style={{
                 width: "100%",
                 padding: "10px 10px 10px 40px",

@@ -11,6 +11,7 @@ import {
   setEditUserSuccess,
   setDeleteUserRequest,
   setDeleteUserSuccess,
+  fetchUserSearchRequest,
 } from "./userSlice";
 import type {
   UserResponse,
@@ -102,9 +103,29 @@ function* setDeleteUserSaga(
   }
 }
 
+// buscar no imput um produto usando parametro
+function* fetchUserSearchSaga(action: PayloadAction<string>): Generator {
+  try {
+    const searchTerm = action.payload;
+    const { data: response }: { data: UserResponse } = yield call(
+      api.get,
+      "/users",
+      {
+        params: { name: searchTerm },
+      },
+    );
+
+    yield put(fetchUsersSuccess(response));
+  } catch (error) {
+    console.log("Erro na busca:", error);
+    toast.error("Erro ao buscar funcionário.");
+  }
+}
+
 export default function* userSaga() {
   yield takeLatest(fetchUsersRequest.type, fetchUsersSaga);
   yield takeLatest(setCreateUserRequest.type, setCreateUserSaga);
   yield takeLatest(setEditUserResquest.type, setEditUserSaga);
   yield takeLatest(setDeleteUserRequest.type, setDeleteUserSaga);
+  yield takeLatest(fetchUserSearchRequest.type, fetchUserSearchSaga);
 }

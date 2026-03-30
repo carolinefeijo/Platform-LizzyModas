@@ -76,4 +76,8 @@ export type PayloadActions = {
       id: number;
     };
   };
+  FetchUserSearchRequest: {
+    type: string;
+    payload: string;
+  };
 };

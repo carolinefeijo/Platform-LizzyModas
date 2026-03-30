@@ -11,11 +11,12 @@ import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete ";
 import SearchInput from "../../components/SearchInput";
+import Loading from "../../components/Loading";
 import "./styles.css";
 
 function Products() {
   const dispatch = useDispatch();
-  const { products } = useSelector(
+  const { products, loading } = useSelector(
     (state: { product: ProductState }) => state.product,
   );
 
@@ -53,56 +54,66 @@ function Products() {
       </div>
 
       <SearchInput
+        placeholder="Digite o nome do produto"
         value={searchTerm}
         onChange={handleInputChange}
         onSearch={handleSearch}
       />
-      {products?.length === 0 ? (
-        <p>Nada encontrado</p>
-      ) : (
-        <div className="accordion-list">
-          {products?.map((product) => (
-            <details className="accordion-item" key={product.id}>
-              <summary className="accordion-header">
-                <div className="info-group">
-                  <span className="product-id">#{product.id}</span>
-                  <strong className="product-name">
-                    {product.name || "Sem nome"}
-                  </strong>
-                </div>
 
-                <div className="action-group">
-                  <button
-                    className="btn-icon edit"
-                    onClick={() => {
-                      setSelected(product);
-                      setIsOpenEditModal(true);
-                    }}
-                  >
-                    <FiEdit2 size={16} />
-                  </button>
-                  <button
-                    className="btn-icon delete"
-                    onClick={() => {
-                      setProductDeleted(product);
-                      setIsOpenDeleteModal(true);
-                    }}
-                  >
-                    <FiTrash2 size={16} />
-                  </button>
-                  <span className="chevron">▾</span>
-                </div>
-              </summary>
-
-              <div className="accordion-content">
-                <p>
-                  <strong>Descrição:</strong>{" "}
-                  {product.description || "Sem descrição."}
-                </p>
-              </div>
-            </details>
-          ))}
+      {loading ? (
+        <div style={{ marginTop: "12rem" }}>
+          <Loading />
         </div>
+      ) : (
+        <>
+          {products?.length === 0 ? (
+            <p>Nada encontrado</p>
+          ) : (
+            <div className="accordion-list">
+              {products?.map((product) => (
+                <details className="accordion-item" key={product.id}>
+                  <summary className="accordion-header">
+                    <div className="info-group">
+                      <span className="product-id">#{product.id}</span>
+                      <strong className="product-name">
+                        {product.name || "Sem nome"}
+                      </strong>
+                    </div>
+
+                    <div className="action-group">
+                      <button
+                        className="btn-icon edit"
+                        onClick={() => {
+                          setSelected(product);
+                          setIsOpenEditModal(true);
+                        }}
+                      >
+                        <FiEdit2 size={16} />
+                      </button>
+                      <button
+                        className="btn-icon delete"
+                        onClick={() => {
+                          setProductDeleted(product);
+                          setIsOpenDeleteModal(true);
+                        }}
+                      >
+                        <FiTrash2 size={16} />
+                      </button>
+                      <span className="chevron">▾</span>
+                    </div>
+                  </summary>
+
+                  <div className="accordion-content">
+                    <p>
+                      <strong>Descrição:</strong>{" "}
+                      {product.description || "Sem descrição."}
+                    </p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />

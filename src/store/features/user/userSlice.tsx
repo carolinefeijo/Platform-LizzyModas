@@ -88,6 +88,12 @@ export const userSlice = createSlice({
 
       state.users = newList;
     },
+    fetchUserSearchRequest: (
+      state,
+      _action: PayloadActions["FetchUserSearchRequest"],
+    ) => {
+      state.loading = true;
+    },
   },
 });
 
@@ -100,6 +106,7 @@ export const {
   setEditUserSuccess,
   setDeleteUserRequest,
   setDeleteUserSuccess,
+  fetchUserSearchRequest,
 } = userSlice.actions;
 
 export default userSlice.reducer;
