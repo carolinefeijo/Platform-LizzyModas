@@ -28,8 +28,8 @@ html {
 }
 
 .main-content {
-  margin-left: 65px; /* Alinhado com a sidebar fechada */
-  padding-top: 80px; /* Espaço para o Header (60px) + um respiro (20px) */
+  margin-left: 65px;
+  padding-top: 80px;
   padding-left: 30px;
   padding-right: 30px;
 }

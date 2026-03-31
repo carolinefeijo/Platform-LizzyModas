@@ -21,6 +21,10 @@ function App() {
     dispatch(checkAuthRequest());
   }, [dispatch]);
 
+  // if (isAuthenticated === null) {
+  //   return <div className="loading-container">Carregando...</div>;
+  // }
+
   return (
     <BrowserRouter>
       {isAuthenticated ? (

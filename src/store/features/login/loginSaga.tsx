@@ -13,6 +13,7 @@ function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
     };
 
     const token = data.token;
+    console.log("objeto:", data);
 
     if (token) {
       localStorage.setItem("@App:token", token);

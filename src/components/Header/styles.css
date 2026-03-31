@@ -1,3 +1,14 @@
+/* Variáveis de Cor - Ajuste conforme seu projeto */
+:root {
+  --primary-color: #d184c5;
+  --success: #10b981;
+  --danger: #ef4444;
+  --text-main: #374151;
+  --gray-light: #f3f4f6;
+  --border-color: #e5e7eb;
+}
+
+/* Header Principal */
 .header-container {
   position: fixed;
   top: 0;
@@ -5,11 +16,11 @@
   left: 65px;
   height: 60px;
   background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   padding: 0 2rem;
-  z-index: 900; /* Abaixo da sidebar que é 1000 */
+  z-index: 900;
   transition: left 0.3s ease;
 }
 
@@ -39,21 +50,184 @@
   font-size: 0.9rem;
 }
 
-.login-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    background-color 0.2s;
+/* Container do Perfil e Dropdown */
+.user-profile-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 60px; /* Garante que o hover cubra toda a altura do header */
 }
 
-.login-btn:hover {
-  background-color: #d184c5;
-  transform: translateY(-1px);
+.user-info-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+/* A "PONTE": Preenche o espaço vazio entre o botão e o menu */
+.user-info-trigger::after {
+  content: "";
+  position: absolute;
+  bottom: -15px; /* Altura da folga */
+  right: 0;
+  width: 100%;
+  height: 20px;
+  display: none;
+}
+
+.user-profile-container:hover .user-info-trigger::after {
+  display: block;
+}
+
+.user-profile-container:hover .user-info-trigger {
+  background-color: var(--gray-light);
+}
+
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid var(--success);
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+/* Estilização do Menu Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: 55px; /* Levemente abaixo do botão */
+  right: 0;
+  width: 200px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 8px 0;
+  z-index: 1000;
+
+  /* Lógica de exibição */
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+}
+
+/* Exibe o menu ao passar o mouse no container pai */
+.user-profile-container:hover .user-dropdown {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f9fafb;
+}
+
+.dropdown-divider {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 6px 0;
+}
+
+/* Botão de Sair Ajustado */
+.btn-dropdown-logout {
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.btn-dropdown-logout:hover {
+  background-color: #fff1f2;
+  color: #be123c;
+}
+
+/* Switch (Estilo minimalista) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  transition: 0.3s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--success);
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+/* Animação suave de entrada */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
