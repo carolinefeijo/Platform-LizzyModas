@@ -2,7 +2,12 @@ import api from "../../../api";
 import { toast } from "react-toastify";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { checkAuthRequest, loginRequest, loginSuccess } from "./loginSlice";
+import {
+  checkAuthRequest,
+  checkAuthSuccess,
+  loginRequest,
+  loginSuccess,
+} from "./loginSlice";
 import type { LoginPayload } from "./types";
 
 function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
@@ -13,7 +18,6 @@ function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
     };
 
     const token = data.token;
-    console.log("objeto:", data);
 
     if (token) {
       localStorage.setItem("@App:token", token);
@@ -41,13 +45,13 @@ function* setLoginSaga({ payload }: PayloadAction<LoginPayload>): Generator {
 function* checkAuthSaga(): Generator {
   try {
     const token = localStorage.getItem("@App:token");
-
     if (!token) return;
-
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     const { data } = yield call(api.get, "/me");
-    yield put(loginSuccess(data));
+    //  console response do checkAuth
+    yield put(checkAuthSuccess(data));
+    console.log("CheckAuth response data:", data);
   } catch {
     localStorage.removeItem("@App:token");
     delete api.defaults.headers.Authorization;

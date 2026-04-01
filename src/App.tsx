@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
 import Home from "./pages/home";
 import Users from "./pages/users";
 import Sidebar from "./components/SideBar";
@@ -10,10 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuthRequest } from "./store/features/login/loginSlice";
 import type { UserState } from "./store/features/user/userSlice";
 import "./App.css";
+import Loading from "./components/Loading";
 
 function App() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(
+  const { isAuthenticated, user } = useSelector(
     (state: { login: UserState }) => state.login,
   );
 
@@ -21,9 +23,13 @@ function App() {
     dispatch(checkAuthRequest());
   }, [dispatch]);
 
-  // if (isAuthenticated === null) {
-  //   return <div className="loading-container">Carregando...</div>;
-  // }
+  if (!isAuthenticated && !user && location.pathname !== "/login") {
+    return (
+      <div className="loading-screen">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>

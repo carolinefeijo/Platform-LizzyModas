@@ -32,6 +32,11 @@ export const loginSlice = createSlice({
     checkAuthRequest: (state) => {
       state.loading = true;
     },
+    checkAuthSuccess: (state, action: PayloadAction<User>) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload;
+    },
     logout: (state) => {
       state.loading = false;
       state.isAuthenticated = false;
@@ -39,7 +44,12 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { loginRequest, logout, loginSuccess, checkAuthRequest } =
-  loginSlice.actions;
+export const {
+  loginRequest,
+  logout,
+  loginSuccess,
+  checkAuthRequest,
+  checkAuthSuccess,
+} = loginSlice.actions;
 
 export default loginSlice.reducer;
