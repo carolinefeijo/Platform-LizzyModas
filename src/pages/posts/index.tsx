@@ -2,8 +2,17 @@ import "./styles.css";
 import { BsTrash, BsChevronDown, BsPencilSquare, BsPlus } from "react-icons/bs";
 
 import "./styles.css";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchPostsRequest } from "../../store/features/post/postSlice";
 
 function Products() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPostsRequest());
+  }, [dispatch]);
+
   return (
     <div className="container">
       <div className="header-actions">
@@ -13,48 +22,21 @@ function Products() {
         </button>
       </div>
 
-      {/* <SearchInput
-        placeholder="Digite o nome do produto"
-        value={searchTerm}
-        onChange={handleInputChange}
-        onSearch={handleSearch}
-      /> */}
+      <div style={{ marginTop: "12rem" }}></div>
 
-      {/* {loading ? ( */}
-      <div style={{ marginTop: "12rem" }}>{/* <Loading /> */}</div>
-      {/* //   ) : ( */}
-      {/* //     <> */}
-      {/* //       {products?.length === 0 ? ( */}
-      {/* //         <p>Nada encontrado</p>
-        //   ) : ( */}
       <div className="accordion-list">
-        {/* {products?.map((product) => ( */}
         <details className="accordion-item">
           <summary className="accordion-header">
             <div className="info-group">
-              <div className="avatar-circle">
-                {/* {product.name.charAt(0).toUpperCase()} */}
-              </div>
+              <div className="avatar-circle"></div>
               <strong className="product-name">"Sem nome"</strong>
             </div>
 
             <div className="action-group">
-              <button
-                className="btn-icon edit"
-                // onClick={() => {
-                //   setSelected(product);
-                //   setIsOpenEditModal(true);
-                // }}
-              >
+              <button className="btn-icon edit">
                 <BsPencilSquare size={16} />
               </button>
-              <button
-                className="btn-icon delete"
-                // onClick={() => {
-                //   setProductDeleted(product);
-                //   setIsOpenDeleteModal(true);
-                // }}
-              >
+              <button className="btn-icon delete">
                 <BsTrash size={16} />
               </button>
               <span className="chevron">
@@ -66,26 +48,10 @@ function Products() {
           <div className="accordion-content">
             <p>
               <strong>Descrição:</strong>{" "}
-              {/* {product.description || "Sem descrição."} */}
             </p>
           </div>
         </details>
       </div>
-      {/* )}
-        </> */}
-      {/* )} */}
-
-      {/* <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
-      <Edit
-        visible={isOpenEditModal}
-        onClose={() => setIsOpenEditModal(false)}
-        product={selected}
-      />
-      <Delete
-        visible={isOpenDeleteModal}
-        onClose={() => setIsOpenDeleteModal(false)}
-        product={productDeleted}
-      /> */}
     </div>
   );
 }
