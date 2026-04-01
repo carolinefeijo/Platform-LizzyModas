@@ -2,7 +2,6 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 1.5rem;
-  font-family: "Inter", system-ui, sans-serif;
 }
 
 .header {
@@ -38,6 +37,36 @@
 
 .btn-create:hover {
   background: #d184c5;
+}
+
+.btn-icon {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon.edit {
+  color: #d780ca;
+}
+
+.btn-icon.edit:hover {
+  background-color: #e7f1ff;
+  border-color: #cfe2ff;
+}
+
+.btn-icon.delete {
+  color: var(--danger);
+}
+
+.btn-icon.delete:hover {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
 }
 
 .accordion-list {
@@ -111,10 +140,10 @@
 }
 
 /* Botões de Ação */
-.icon-button {
+.btn-icon {
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: none;
   background: white;
   cursor: pointer;
   display: flex;
@@ -122,17 +151,28 @@
   transition: all 0.2s;
 }
 
-.icon-button.view {
-  color: #6b7280;
+.btn-icon.view {
+  color: #252729;
 }
-.icon-button.edit {
+.btn-icon.view:hover {
+  background-color: #e7f1ff;
+  border-color: #cfe2ff;
+}
+
+.btn-icon.edit {
   color: #d780ca;
 }
-.icon-button.delete {
+
+.btn-icon.edit:hover {
+  background-color: #e7f1ff;
+  border-color: #cfe2ff;
+}
+
+.btn-icon.delete {
   color: #dc2626;
 }
 
-.icon-button:hover {
+.btn-icon:hover {
   background: #f3f4f6;
   transform: translateY(-1px);
 }

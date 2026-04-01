@@ -1,17 +1,17 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-
+import Login from "./pages/login";
+import Header from "./components/Header";
+import Sidebar from "./components/SideBar";
 import Home from "./pages/home";
 import Users from "./pages/users";
-import Sidebar from "./components/SideBar";
 import Products from "./pages/products";
-import Header from "./components/Header";
-import Login from "./pages/login";
+import Posts from "./pages/posts";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuthRequest } from "./store/features/login/loginSlice";
 import type { UserState } from "./store/features/user/userSlice";
-import "./App.css";
 import Loading from "./components/Loading";
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +43,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/posts" element={<Posts />} />
                 <Route path="*" element={<Navigate to="/home" />} />
               </Routes>
             </main>

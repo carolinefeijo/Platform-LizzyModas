@@ -6,12 +6,12 @@ import {
   type ProductState,
 } from "../../store/features/product/productSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete ";
 import SearchInput from "../../components/SearchInput";
 import Loading from "../../components/Loading";
+import { BsChevronDown, BsPencilSquare, BsPlus, BsTrash } from "react-icons/bs";
 import "./styles.css";
 
 function Products() {
@@ -49,7 +49,8 @@ function Products() {
       <div className="header-actions">
         <h2>Meus Produtos</h2>
         <button className="btn-create" onClick={() => setIsOpenModal(true)}>
-          <FiPlus /> Novo Produto
+          <BsPlus size={18} />
+          Novo Produto
         </button>
       </div>
 
@@ -74,7 +75,9 @@ function Products() {
                 <details className="accordion-item" key={product.id}>
                   <summary className="accordion-header">
                     <div className="info-group">
-                      <span className="product-id">#{product.id}</span>
+                      <div className="avatar-circle">
+                        {product.name.charAt(0).toUpperCase()}
+                      </div>
                       <strong className="product-name">
                         {product.name || "Sem nome"}
                       </strong>
@@ -88,7 +91,7 @@ function Products() {
                           setIsOpenEditModal(true);
                         }}
                       >
-                        <FiEdit2 size={16} />
+                        <BsPencilSquare size={16} />
                       </button>
                       <button
                         className="btn-icon delete"
@@ -97,9 +100,11 @@ function Products() {
                           setIsOpenDeleteModal(true);
                         }}
                       >
-                        <FiTrash2 size={16} />
+                        <BsTrash size={16} />
                       </button>
-                      <span className="chevron">▾</span>
+                      <span className="chevron">
+                        <BsChevronDown size={16} />
+                      </span>
                     </div>
                   </summary>
 

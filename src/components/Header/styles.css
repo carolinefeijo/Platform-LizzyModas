@@ -12,8 +12,8 @@
 .header-container {
   position: fixed;
   top: 0;
-  right: 0;
-  left: 65px;
+  right: -26px;
+  left: 84px;
   height: 60px;
   background-color: #ffffff;
   border-bottom: 1px solid var(--border-color);

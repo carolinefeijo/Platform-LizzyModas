@@ -11,16 +11,17 @@ import Delete from "./modals/delete";
 import View from "./modals/view";
 import type { User } from "../../store/features/user/types";
 import {
-  FiMail,
-  FiPhone,
-  FiEdit,
-  FiTrash2,
-  FiEye,
-  FiPlus,
-} from "react-icons/fi";
-import "./styles.css";
+  BsTrash,
+  BsChevronDown,
+  BsPencilSquare,
+  BsPlus,
+  BsEye,
+  BsPhone,
+  BsMailbox,
+} from "react-icons/bs";
 import SearchInput from "../../components/SearchInput";
 import Loading from "../../components/Loading";
+import "./styles.css";
 
 function Users() {
   const dispatch = useDispatch();
@@ -65,10 +66,9 @@ function Users() {
       <div className="header">
         <div>
           <h2>Funcionários</h2>
-          <p className="subtitle">Gerencie os acessos da sua equipe !</p>
         </div>
         <button className="btn-create" onClick={() => setIsOpenModal(true)}>
-          <FiPlus /> Novo Funcionário
+          <BsPlus /> Novo Funcionário
         </button>
       </div>
 
@@ -104,7 +104,7 @@ function Users() {
 
                     <div className="actions-group">
                       <button
-                        className="icon-button view"
+                        className="btn-icon view"
                         title="Visualizar"
                         onClick={(e) =>
                           handleAction(e, () => {
@@ -113,10 +113,10 @@ function Users() {
                           })
                         }
                       >
-                        <FiEye />
+                        <BsEye size={16} />
                       </button>
                       <button
-                        className="icon-button edit"
+                        className="btn-icon edit"
                         title="Editar"
                         onClick={(e) =>
                           handleAction(e, () => {
@@ -125,10 +125,10 @@ function Users() {
                           })
                         }
                       >
-                        <FiEdit />
+                        <BsPencilSquare size={16} />
                       </button>
                       <button
-                        className="icon-button delete"
+                        className="btn-icon delete"
                         title="Deletar"
                         onClick={(e) =>
                           handleAction(e, () => {
@@ -137,26 +137,28 @@ function Users() {
                           })
                         }
                       >
-                        <FiTrash2 />
+                        <BsTrash size={16} />
                       </button>
-                      <span className="chevron">▾</span>
+                      <span className="chevron">
+                        <BsChevronDown size={16} />
+                      </span>
                     </div>
                   </summary>
 
                   <div className="accordion-content">
                     <div className="detail-grid">
                       <div className="detail-item">
-                        <FiMail className="detail-icon" />
+                        <BsMailbox className="detail-icon" />
                         <div>
                           <label>E-mail</label>
                           <p>{user.email || "--"}</p>
                         </div>
                       </div>
                       <div className="detail-item">
-                        <FiPhone className="detail-icon" />
+                        <BsPhone className="detail-icon" />
                         <div>
                           <label>Telefone</label>
-                          <p>{user.phone || "--"}</p>
+                          <p>{user.phone || "--"} </p>
                         </div>
                       </div>
                     </div>

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, type LoginState } from "../../store/features/login/loginSlice";
+import { BsChevronDown } from "react-icons/bs";
 import api from "../../api";
 import "./styles.css";
 
@@ -21,7 +22,7 @@ function Header() {
     <header className="header-container">
       <div className="header-content">
         <div className="logo-section">
-          <span className="brand-name">CAROL SISTEMAS</span>
+          <span className="brand-name">Seja bem vindo(a) !</span>
         </div>
 
         <div className="user-section">
@@ -35,7 +36,9 @@ function Header() {
               <span className="user-name">
                 {user?.name || "Usuário Logado"}
               </span>
-              <span className="chevron">▼</span>
+              <span className="chevron">
+                <BsChevronDown />
+              </span>
             </div>
 
             <div className="user-dropdown">

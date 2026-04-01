@@ -1,7 +1,13 @@
 import { useState } from "react";
-import "./styles.css";
-import { Home, LayoutGrid, Package, Users } from "lucide-react";
+import {
+  BsColumnsGap,
+  BsBoxSeam,
+  BsHouse,
+  BsLayoutTextWindowReverse,
+  BsPerson,
+} from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import "./styles.css";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -13,24 +19,29 @@ const Sidebar = () => {
       onMouseLeave={() => setIsCollapsed(true)}
     >
       <div className="logo">
-        <LayoutGrid className="logo-icon" size={28} />
+        <BsColumnsGap size={22} />
         {!isCollapsed && <h2>Dashboard</h2>}
       </div>
 
       <nav className="nav">
         <NavLink to="/home" className="navLink">
-          <Home size={20} />
-          {!isCollapsed && <span>Home</span>}
+          <BsHouse size={20} />
+          {!isCollapsed && <span>inicio</span>}
         </NavLink>
 
-        <NavLink to="/users" className="navLink">
-          <Users size={20} />
-          {!isCollapsed && <span>Funcionários</span>}
+        <NavLink to="/posts" className="navLink">
+          <BsLayoutTextWindowReverse size={20} />
+          {!isCollapsed && <span>Postagens</span>}
         </NavLink>
 
         <NavLink to="/products" className="navLink">
-          <Package size={20} />
+          <BsBoxSeam size={20} />
           {!isCollapsed && <span>Produtos</span>}
+        </NavLink>
+
+        <NavLink to="/users" className="navLink">
+          <BsPerson size={20} />
+          {!isCollapsed && <span>Funcionários</span>}
         </NavLink>
       </nav>
     </aside>
