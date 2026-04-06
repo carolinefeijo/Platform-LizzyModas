@@ -8,15 +8,16 @@ import {
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { formatDate, formatPrice } from "../../utils";
 import type { Post } from "../../store/features/post/types";
 import {
   fetchPostsRequest,
   type PostState,
 } from "../../store/features/post/postSlice";
 import Loading from "../../components/Loading";
-import { formatDate, formatPrice } from "../../utils";
-import "./styles.css";
 import ShareModal from "./modais/share";
+import "./styles.css";
+import View from "./modais/view";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function Posts() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [postSelectedView, setPostSelectedView] = useState<Post | null>(null);
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
@@ -73,7 +75,14 @@ function Posts() {
                   </div>
 
                   <div className="action-group">
-                    <button className="btn-icon view">
+                    <button
+                      className="btn-icon view"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setPostSelectedView(post);
+                        setIsModalOpen(true);
+                      }}
+                    >
                       <BsEye size={16} />
                     </button>
                     <button className="btn-icon edit">
@@ -119,6 +128,12 @@ function Posts() {
           )}
         </div>
       )}
+
+      <View
+        visible={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        post={postSelectedView}
+      />
 
       <ShareModal
         visible={isModalOpen}
