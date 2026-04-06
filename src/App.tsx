@@ -23,13 +23,13 @@ function App() {
     dispatch(checkAuthRequest());
   }, [dispatch]);
 
-  if (!isAuthenticated && !user && location.pathname !== "/login") {
-    return (
-      <div className="loading-screen">
-        <Loading />
-      </div>
-    );
-  }
+  // if (!isAuthenticated && !user && location.pathname !== "/login") {
+  //   return (
+  //     <div className="loading-screen">
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <BrowserRouter>

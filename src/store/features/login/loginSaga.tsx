@@ -49,9 +49,7 @@ function* checkAuthSaga(): Generator {
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     const { data } = yield call(api.get, "/me");
-    //  console response do checkAuth
     yield put(checkAuthSuccess(data));
-    console.log("CheckAuth response data:", data);
   } catch {
     localStorage.removeItem("@App:token");
     delete api.defaults.headers.Authorization;

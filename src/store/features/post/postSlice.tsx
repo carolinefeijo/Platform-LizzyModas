@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
-import type { Post } from "./types";
+import type { PayloadActions, Post } from "./types";
 
 export interface PostState {
   loading: boolean;
@@ -20,9 +20,13 @@ export const postSlice = createSlice({
       state.loading = true;
       state.posts = [];
     },
+    fetchPostsSuccess: (state, action: PayloadActions["FetchPostsSuccess"]) => {
+      state.loading = false;
+      state.posts = action.payload.data;
+    },
   },
 });
 
-export const { fetchPostsRequest } = postSlice.actions;
+export const { fetchPostsRequest, fetchPostsSuccess } = postSlice.actions;
 
 export default postSlice.reducer;

@@ -1,15 +1,20 @@
 import api from "../../../api";
-import { call, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 
 // import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { fetchPostsRequest } from "./postSlice";
+import { fetchPostsRequest, fetchPostsSuccess } from "./postSlice";
+import type { PostsResponse } from "./types";
 
 // listar todos os posts
 function* fetchPostsSaga(): Generator {
   try {
-    const { data: response }: { data: unknown } = yield call(api.get, "/posts");
-    console.log(response);
+    const { data: response }: { data: PostsResponse } = yield call(
+      api.get,
+      "/posts",
+    );
+    yield put(fetchPostsSuccess(response));
+    console.log({ response });
   } catch (error) {
     console.log(error);
   }
