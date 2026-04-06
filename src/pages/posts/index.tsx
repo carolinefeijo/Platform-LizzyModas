@@ -5,10 +5,6 @@ import {
   BsPlus,
   BsEye,
   BsShare,
-  BsFacebook,
-  BsInstagram,
-  BsWhatsapp,
-  BsXLg,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -18,8 +14,9 @@ import {
   type PostState,
 } from "../../store/features/post/postSlice";
 import Loading from "../../components/Loading";
-import { formatDate, formatPrice, getShareLink } from "../../utils";
+import { formatDate, formatPrice } from "../../utils";
 import "./styles.css";
+import ShareModal from "./modais/share";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -37,12 +34,6 @@ function Posts() {
   const handleOpenShare = (post: Post) => {
     setSelectedPost(post);
     setIsModalOpen(true);
-  };
-
-  const handleShare = (platform: "wa" | "fb" | "ig") => {
-    if (!selectedPost) return;
-    const link = getShareLink(platform, selectedPost);
-    window.open(link, "_blank");
   };
 
   return (
@@ -109,10 +100,11 @@ function Posts() {
                 <div className="accordion-content">
                   <div className="details-info">
                     <p>
-                      <strong>ID:</strong> {post.id}
+                      <strong>ID do produto:</strong> {post.id}
                     </p>
                     <p>
-                      <strong>Criação:</strong> {formatDate(post.createdAt)}
+                      <strong>Criação da postagem:</strong>{" "}
+                      {formatDate(post.createdAt)}
                     </p>
                     <p>
                       <strong>Categoria:</strong> {post.category || "Geral"}
@@ -128,61 +120,11 @@ function Posts() {
         </div>
       )}
 
-      {/* Modal de Compartilhamento */}
-      {isModalOpen && (
-        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <header className="modal-header">
-              <h3>Compartilhar Produto</h3>
-              <button
-                className="close-modal"
-                onClick={() => setIsModalOpen(false)}
-              >
-                <BsXLg />
-              </button>
-            </header>
-
-            <div className="share-card-preview">
-              <div className="share-img-box">
-                {selectedPost?.image ? (
-                  <img src={selectedPost.image} alt={selectedPost.name} />
-                ) : (
-                  <div className="no-img-placeholder">Sem Foto</div>
-                )}
-              </div>
-              <div className="share-details-box">
-                <h4>{selectedPost?.name}</h4>
-                <span className="share-tag">@lizzymodas</span>
-                <p className="share-price-label">
-                  {formatPrice(selectedPost?.price || 0)}
-                </p>
-                <small>{selectedPost?.category}</small>
-              </div>
-            </div>
-
-            <nav className="share-actions-list">
-              <button
-                className="share-btn wa"
-                onClick={() => handleShare("wa")}
-              >
-                <BsWhatsapp /> WhatsApp
-              </button>
-              <button
-                className="share-btn fb"
-                onClick={() => handleShare("fb")}
-              >
-                <BsFacebook /> Facebook
-              </button>
-              <button
-                className="share-btn ig"
-                onClick={() => handleShare("ig")}
-              >
-                <BsInstagram /> Instagram
-              </button>
-            </nav>
-          </div>
-        </div>
-      )}
+      <ShareModal
+        visible={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        post={selectedPost}
+      />
     </div>
   );
 }

@@ -1,0 +1,96 @@
+/* Caixa do Modal */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.modal-share-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Opções de compartilhamento */
+
+.share-item {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.share-actions-list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.share-btn-wa {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1bbc56;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.share-btn-fb {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1b76bc;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.share-btn-ig {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #cb24a7;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
