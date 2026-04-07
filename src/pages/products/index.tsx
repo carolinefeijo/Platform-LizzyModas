@@ -47,10 +47,13 @@ function Products() {
   return (
     <div className="container">
       <div className="header-actions">
-        <h2>Meus Produtos</h2>
+        <div>
+          <h2>Meus Produtos</h2>
+          <p className="subtitle">Gerencie os produtos da sua loja</p>
+        </div>
         <button className="btn-create" onClick={() => setIsOpenModal(true)}>
           <BsPlus size={18} />
-          Novo Produto
+          Novo
         </button>
       </div>
 

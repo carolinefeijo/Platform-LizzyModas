@@ -66,9 +66,10 @@ function Users() {
       <div className="header">
         <div>
           <h2>Funcionários</h2>
+          <p className="subtitle">Gerencie os funcionários da sua loja</p>
         </div>
         <button className="btn-create" onClick={() => setIsOpenModal(true)}>
-          <BsPlus /> Novo Funcionário
+          <BsPlus /> Novo
         </button>
       </div>
 

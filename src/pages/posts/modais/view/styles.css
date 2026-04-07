@@ -1,0 +1,155 @@
+.view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+  padding-bottom: 10px;
+}
+
+/* Estilo da Imagem e Zoom */
+.view-image-section {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  position: relative;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 250px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-wrapper.zoomed {
+  height: 450px; /* Aumenta a altura significativamente */
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Garante que a foto apareça toda sem cortes */
+  transition: transform 0.3s ease;
+}
+
+.zoom-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.image-wrapper:hover .zoom-overlay {
+  opacity: 1;
+}
+
+/* Informações de Título e Preço */
+.view-header-info {
+  text-align: center;
+}
+
+.category-tag {
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.view-header-info h3 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--text-main, #333);
+}
+
+.view-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #d780ca; /* Seu tom de rosa lilás */
+  margin-top: 5px;
+}
+
+/* Descrição */
+.view-description {
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid var(--success, #edaee4);
+}
+
+.view-description label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #999;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.view-description p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Grid de Informações Técnicas */
+.view-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.view-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.view-icon {
+  font-size: 1.2rem;
+  color: var(--success, #edaee4);
+}
+
+.view-info label {
+  display: block;
+  font-size: 0.7rem;
+  color: #aaa;
+  font-weight: 600;
+}
+
+.view-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.view-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  width: 100%;
+}

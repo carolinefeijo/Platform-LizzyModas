@@ -1,33 +1,37 @@
 import {
   BsTrash,
-  BsChevronDown,
   BsPencilSquare,
   BsPlus,
   BsEye,
   BsShare,
+  BsHeart,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { formatDate, formatPrice } from "../../utils";
 import type { Post } from "../../store/features/post/types";
 import {
+  fetchPostDetailsRequest,
   fetchPostsRequest,
   type PostState,
 } from "../../store/features/post/postSlice";
 import Loading from "../../components/Loading";
 import ShareModal from "./modais/share";
-import "./styles.css";
 import View from "./modais/view";
+import "./styles.css";
 
 function Posts() {
   const dispatch = useDispatch();
-  const { posts, loading } = useSelector(
+  const { posts, loading, loadingDetails, postDetails } = useSelector(
     (state: { post: PostState }) => state.post,
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isViewOpen, setIsViewOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [postSelectedView, setPostSelectedView] = useState<Post | null>(null);
+  // const [selectedPostDetails, setSelectedPostDetails] = useState<Post | null>(
+  //   null,
+  // );
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
@@ -35,15 +39,27 @@ function Posts() {
 
   const handleOpenShare = (post: Post) => {
     setSelectedPost(post);
-    setIsModalOpen(true);
+    setIsShareOpen(true);
+  };
+
+  const handleOpenView = (id: number) => {
+    dispatch(
+      fetchPostDetailsRequest({
+        id,
+      }),
+    );
+    setIsViewOpen(true);
   };
 
   return (
     <div className="container">
       <header className="header-actions">
-        <h2>Postagens da loja</h2>
+        <div>
+          <h2>Publicações</h2>
+          <p className="subtitle">Gerencie as postagens da sua loja</p>
+        </div>
         <button className="btn-create">
-          <BsPlus /> Novo Post
+          <BsPlus size={24} /> Novo
         </button>
       </header>
 
@@ -52,14 +68,14 @@ function Posts() {
           <Loading />
         </div>
       ) : (
-        <div className="accordion-list">
+        <div className="posts-feed">
           {posts?.length === 0 ? (
             <p className="empty-msg">Nenhuma postagem encontrada.</p>
           ) : (
             posts?.map((post) => (
-              <details className="accordion-item" key={post.id}>
-                <summary className="accordion-header">
-                  <div className="info-group">
+              <article className="post-card" key={post.id}>
+                <div className="post-header">
+                  <div className="author-info">
                     <div className="avatar-circle">
                       {post.image ? (
                         <img src={post.image} alt={post.name} />
@@ -69,75 +85,80 @@ function Posts() {
                         </div>
                       )}
                     </div>
-                    <strong className="product-name">
-                      {post.name || "Sem nome"}
-                    </strong>
+                    <div className="author-text">
+                      <strong className="product-name">
+                        {post.name || "Post sem nome"}
+                      </strong>
+                      <span className="post-date">
+                        {formatDate(post.createdAt)}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="action-group">
-                    <button
-                      className="btn-icon view"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPostSelectedView(post);
-                        setIsModalOpen(true);
-                      }}
-                    >
-                      <BsEye size={16} />
+                  <div className="admin-actions">
+                    <button className="btn-minimal edit" title="Editar">
+                      <BsPencilSquare size={18} />
                     </button>
-                    <button className="btn-icon edit">
-                      <BsPencilSquare size={16} />
+                    <button className="btn-minimal delete" title="Excluir">
+                      <BsTrash size={18} />
                     </button>
-                    <button className="btn-icon delete">
-                      <BsTrash size={16} />
-                    </button>
-                    <button
-                      className="btn-icon share"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleOpenShare(post);
-                      }}
-                    >
-                      <BsShare size={16} />
-                    </button>
-                    <span className="chevron">
-                      <BsChevronDown size={16} />
-                    </span>
-                  </div>
-                </summary>
-
-                <div className="accordion-content">
-                  <div className="details-info">
-                    <p>
-                      <strong>ID do produto:</strong> {post.id}
-                    </p>
-                    <p>
-                      <strong>Criação da postagem:</strong>{" "}
-                      {formatDate(post.createdAt)}
-                    </p>
-                    <p>
-                      <strong>Categoria:</strong> {post.category || "Geral"}
-                    </p>
-                    <p>
-                      <strong>Preço:</strong> {formatPrice(post.price || 0)}
-                    </p>
                   </div>
                 </div>
-              </details>
+
+                <div
+                  className="post-body"
+                  onClick={() => handleOpenView(post.id)}
+                >
+                  <div className="post-tags">
+                    <span className="tag">{post.category || "Geral"}</span>
+                    <span className="tag price">
+                      {formatPrice(post.price || 0)}
+                    </span>
+                  </div>
+                  <p className="post-description">
+                    Confira os detalhes deste item disponível no estoque. Clique
+                    em "Ver detalhes" para informações técnicas completas.
+                  </p>
+                </div>
+
+                <footer className="post-footer">
+                  <div className="social-group">
+                    <button className="btn-social like">
+                      <BsHeart size={20} />
+                      <span>Curtir</span>
+                    </button>
+                    <button
+                      className="btn-social share"
+                      onClick={() => handleOpenShare(post)}
+                    >
+                      <BsShare size={18} />
+                      <span>Compartilhar</span>
+                    </button>
+                  </div>
+
+                  <button
+                    className="btn-details"
+                    onClick={() => handleOpenView(post.id)}
+                  >
+                    <BsEye size={18} /> Ver detalhes
+                  </button>
+                </footer>
+              </article>
             ))
           )}
         </div>
       )}
 
       <View
-        visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        post={postSelectedView}
+        visible={isViewOpen}
+        onClose={() => setIsViewOpen(false)}
+        post={postDetails}
+        loading={loadingDetails}
       />
 
       <ShareModal
-        visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        visible={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
         post={selectedPost}
       />
     </div>

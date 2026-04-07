@@ -38,6 +38,9 @@ const SearchInput = ({
                 border: "1px solid #d1d5db",
                 outline: "none",
                 boxSizing: "border-box",
+                fontFamily: "Quicksand, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
               }}
             />
             <Search

@@ -22,21 +22,22 @@
 }
 
 .btn-create {
-  background: #d184c5;
+  background-color: var(--success);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
+  font-weight: 600;
+  transition: transform 0.2s;
 }
 
 .btn-create:hover {
-  background: #d184c5;
+  transform: translateY(-2px);
+  filter: brightness(1.05);
 }
 
 .btn-icon {
@@ -106,18 +107,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.avatar-circle {
-  width: 40px;
-  height: 40px;
-  background: #ecdbea;
-  color: #d184c5;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
 }
 
 .user-basic-info {

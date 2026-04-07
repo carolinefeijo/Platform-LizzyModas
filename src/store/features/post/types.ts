@@ -4,6 +4,8 @@ export type Post = {
   image: string;
   price: number;
   category: string;
+  description?: string;
+  size?: string;
   userId: 1;
   createdAt: string;
   updatedAt: string;
@@ -21,6 +23,10 @@ export type PostsResponse = {
   meta: UserMeta;
 };
 
+export type PostDetailsResponse = {
+  data: Post;
+};
+
 export type PayloadActions = {
   FetchPostsRequest: {
     type: string;
@@ -28,5 +34,15 @@ export type PayloadActions = {
   FetchPostsSuccess: {
     type: string;
     payload: PostsResponse;
+  };
+  FetchPostDetailsRequest: {
+    type: string;
+    payload: {
+      id: number;
+    };
+  };
+  FetchPostDetailsSuccess: {
+    type: string;
+    payload: PostDetailsResponse;
   };
 };

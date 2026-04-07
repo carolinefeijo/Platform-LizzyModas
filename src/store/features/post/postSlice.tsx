@@ -5,11 +5,15 @@ import type { PayloadActions, Post } from "./types";
 export interface PostState {
   loading: boolean;
   posts: Post[];
+  postDetails: Post | null;
+  loadingDetails: boolean;
 }
 
 const initialState: PostState = {
   loading: true,
   posts: [],
+  postDetails: null,
+  loadingDetails: false,
 };
 
 export const postSlice = createSlice({
@@ -24,9 +28,28 @@ export const postSlice = createSlice({
       state.loading = false;
       state.posts = action.payload.data;
     },
+    fetchPostDetailsRequest: (
+      state,
+      _action: PayloadActions["FetchPostDetailsRequest"],
+    ) => {
+      state.loadingDetails = true;
+      state.postDetails = null;
+    },
+    fetchPostDetailsSuccess: (
+      state,
+      action: PayloadActions["FetchPostDetailsSuccess"],
+    ) => {
+      state.loadingDetails = false;
+      state.postDetails = action.payload.data;
+    },
   },
 });
 
-export const { fetchPostsRequest, fetchPostsSuccess } = postSlice.actions;
+export const {
+  fetchPostsRequest,
+  fetchPostsSuccess,
+  fetchPostDetailsRequest,
+  fetchPostDetailsSuccess,
+} = postSlice.actions;
 
 export default postSlice.reducer;
