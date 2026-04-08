@@ -7,8 +7,16 @@ export type Post = {
   description?: string;
   size?: string;
   userId: 1;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
   createdAt: string;
   updatedAt: string;
+  count: {
+    likes: number;
+  };
 };
 
 type UserMeta = {

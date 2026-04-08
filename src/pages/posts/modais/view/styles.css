@@ -4,34 +4,38 @@
   gap: 20px;
   max-width: 500px;
   padding-bottom: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 8px;
 }
 
-/* Estilo da Imagem e Zoom */
 .view-image-section {
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
-  background-color: #f5f5f5;
+  background-color: #f4f4f4;
   border: 1px solid #eee;
   position: relative;
+  margin-top: 10px;
 }
 
 .image-wrapper {
   width: 100%;
-  height: 250px;
+  height: 220px;
   cursor: pointer;
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .image-wrapper.zoomed {
-  height: 450px; /* Aumenta a altura significativamente */
+  height: 450px;
 }
 
 .image-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Garante que a foto apareça toda sem cortes */
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 
@@ -51,11 +55,25 @@
   transition: opacity 0.3s;
 }
 
+.view-loading-state {
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .image-wrapper:hover .zoom-overlay {
   opacity: 1;
 }
 
-/* Informações de Título e Preço */
+.title-modal {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-main, #333);
+  margin: 0;
+  margin-top: 10px;
+}
+
 .view-header-info {
   text-align: center;
 }
@@ -81,16 +99,18 @@
 .view-price {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #d780ca; /* Seu tom de rosa lilás */
+  color: #d780ca;
   margin-top: 5px;
+  margin-bottom: 10px;
 }
 
-/* Descrição */
 .view-description {
-  background: #fafafa;
+  background: #f4f4f4;
   padding: 15px;
   border-radius: 8px;
   border-left: 4px solid var(--success, #edaee4);
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .view-description label {

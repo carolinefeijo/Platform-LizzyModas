@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
 import type { Post } from "../../../../store/features/post/types";
 import {
-  FiTag,
-  FiMaximize2,
-  FiCalendar,
-  FiLayers,
-  FiUser,
-  FiInfo,
-} from "react-icons/fi";
+  BsZoomIn,
+  BsInfoCircleFill,
+  BsTag,
+  BsCalendar2,
+  BsLayers,
+  BsHeart,
+  BsPerson,
+} from "react-icons/bs";
 import { formatDate, formatPrice } from "../../../../utils";
 import Loading from "../../../../components/Loading";
 import "./styles.css";
@@ -33,7 +34,6 @@ function View({ visible, onClose, post, loading }: ViewProps) {
         {loading || !post ? (
           <div className="view-loading-state">
             <Loading />
-            <p>Buscando detalhes do produto...</p>
           </div>
         ) : (
           <div className="view-content-fade-in">
@@ -50,7 +50,7 @@ function View({ visible, onClose, post, loading }: ViewProps) {
                   alt={post.name}
                 />
                 <div className="zoom-overlay">
-                  <FiMaximize2 />
+                  <BsZoomIn />
                   <span>
                     {isZoomed ? "Clique para reduzir" : "Clique para ampliar"}
                   </span>
@@ -59,14 +59,13 @@ function View({ visible, onClose, post, loading }: ViewProps) {
             </div>
 
             <div className="view-header-info">
-              <div className="category-tag">{post.category || "Geral"}</div>
-              <h3>{post.name}</h3>
+              <p className="title-modal">{post.name}</p>
               <div className="view-price">{formatPrice(post.price || 0)}</div>
             </div>
 
             <div className="view-description">
               <label>
-                <FiInfo size={14} style={{ marginRight: 4 }} />
+                <BsInfoCircleFill size={14} style={{ marginRight: 4 }} />
                 Descrição do Post
               </label>
               <p>
@@ -78,17 +77,17 @@ function View({ visible, onClose, post, loading }: ViewProps) {
             <div className="view-details-grid">
               <div className="view-item">
                 <div className="view-icon">
-                  <FiLayers />
+                  <BsTag />
                 </div>
                 <div className="view-info">
-                  <label>Tamanho / Tipo</label>
-                  <p>{"Padrão"}</p>
+                  <label>ID Registro</label>
+                  <p>#{post.id.toString().slice(-6).toUpperCase()}</p>
                 </div>
               </div>
 
               <div className="view-item">
                 <div className="view-icon">
-                  <FiCalendar />
+                  <BsCalendar2 />
                 </div>
                 <div className="view-info">
                   <label>Postado em</label>
@@ -98,21 +97,42 @@ function View({ visible, onClose, post, loading }: ViewProps) {
 
               <div className="view-item">
                 <div className="view-icon">
-                  <FiUser />
+                  <BsTag />
                 </div>
                 <div className="view-info">
-                  <label>Vendedor</label>
-                  <p>{"Carol Sistemas"}</p>
+                  <label>Categoria</label>
+                  <p>{post.category || "Geral"}</p>
                 </div>
               </div>
 
               <div className="view-item">
                 <div className="view-icon">
-                  <FiTag />
+                  <BsLayers />
                 </div>
                 <div className="view-info">
-                  <label>ID Registro</label>
-                  <p>#{post.id.toString().slice(-6).toUpperCase()}</p>
+                  <label>Tamanho / Tipo</label>
+                  <p>{post.size || "Não especificado"}</p>
+                </div>
+              </div>
+
+              <div className="view-item">
+                <div className="view-icon">
+                  <BsPerson />
+                </div>
+                <div className="view-info">
+                  <label>Vendedor</label>
+                  <p>{post.user?.name || "Usuário não encontrado"}</p>
+                </div>
+              </div>
+
+              <div className="view-item">
+                <div className="view-icon">
+                  <BsHeart />
+                </div>
+                <div className="view-info">
+                  <label>Curtidas</label>
+
+                  <p>{post.count?.likes || "0"}</p>
                 </div>
               </div>
             </div>
