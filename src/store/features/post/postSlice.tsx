@@ -4,6 +4,7 @@ import type { PayloadActions, Post } from "./types";
 
 export interface PostState {
   loading: boolean;
+  isSubmitting: boolean;
   posts: Post[];
   postDetails: Post | null;
   loadingDetails: boolean;
@@ -11,6 +12,7 @@ export interface PostState {
 
 const initialState: PostState = {
   loading: true,
+  isSubmitting: false,
   posts: [],
   postDetails: null,
   loadingDetails: false,
@@ -42,6 +44,19 @@ export const postSlice = createSlice({
       state.loadingDetails = false;
       state.postDetails = action.payload.data;
     },
+    setCreatePostRequest: (
+      state,
+      _action: PayloadActions["setCreatePostRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setCreatePostSuccess: (
+      state,
+      action: PayloadActions["setCreatePostSuccess"],
+    ) => {
+      const newPost = action.payload.post;
+      state.posts = [newPost, ...state.posts];
+    },
   },
 });
 
@@ -50,6 +65,8 @@ export const {
   fetchPostsSuccess,
   fetchPostDetailsRequest,
   fetchPostDetailsSuccess,
+  setCreatePostRequest,
+  setCreatePostSuccess,
 } = postSlice.actions;
 
 export default postSlice.reducer;

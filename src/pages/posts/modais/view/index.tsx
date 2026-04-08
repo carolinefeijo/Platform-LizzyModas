@@ -12,6 +12,7 @@ import {
 } from "react-icons/bs";
 import { formatDate, formatPrice } from "../../../../utils";
 import Loading from "../../../../components/Loading";
+import notFound from "../../../../assets/notfound.png";
 import "./styles.css";
 
 interface ViewProps {
@@ -42,13 +43,7 @@ function View({ visible, onClose, post, loading }: ViewProps) {
                 className={`image-wrapper ${isZoomed ? "zoomed" : ""}`}
                 onClick={() => setIsZoomed(!isZoomed)}
               >
-                <img
-                  src={
-                    post.image ||
-                    "https://via.placeholder.com/400x300?text=Sem+Imagem"
-                  }
-                  alt={post.name}
-                />
+                <img src={post.image || notFound} alt={post.name} />
                 <div className="zoom-overlay">
                   <BsZoomIn />
                   <span>

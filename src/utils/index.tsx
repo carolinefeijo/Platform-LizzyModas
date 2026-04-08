@@ -34,3 +34,21 @@ export const getShareLink = (platform: "wa" | "fb" | "ig", post: Post) => {
 
   return links[platform];
 };
+
+export const onlyDigits = (s: string) => s.replace(/\D/g, "");
+
+export const formatBRL = (digits: string) => {
+  if (!digits) return "";
+
+  const numberValue = parseInt(digits, 10);
+
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(numberValue / 100);
+};
+
+export const parseToNumber = (value: string) => {
+  const digits = onlyDigits(value);
+  return digits ? parseInt(digits, 10) : 0;
+};

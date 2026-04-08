@@ -26,6 +26,16 @@ type UserMeta = {
   totalPages: number;
 };
 
+export type CreatePostPayload = {
+  image?: File | null;
+  name: string;
+  price: number;
+  category: string;
+  description?: string;
+  size?: string;
+  userId: number;
+};
+
 export type PostsResponse = {
   data: Post[];
   meta: UserMeta;
@@ -52,5 +62,15 @@ export type PayloadActions = {
   FetchPostDetailsSuccess: {
     type: string;
     payload: PostDetailsResponse;
+  };
+  setCreatePostRequest: {
+    type: string;
+    payload: CreatePostPayload;
+  };
+  setCreatePostSuccess: {
+    type: string;
+    payload: {
+      post: Post;
+    };
   };
 };

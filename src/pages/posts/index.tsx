@@ -8,7 +8,7 @@ import {
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { formatDate, formatPrice } from "../../utils";
+import { formatPrice } from "../../utils";
 import type { Post } from "../../store/features/post/types";
 import {
   fetchPostDetailsRequest,
@@ -18,6 +18,7 @@ import {
 import Loading from "../../components/Loading";
 import ShareModal from "./modais/share";
 import View from "./modais/view";
+import Create from "./modais/create";
 import "./styles.css";
 
 function Posts() {
@@ -25,13 +26,10 @@ function Posts() {
   const { posts, loading, loadingDetails, postDetails } = useSelector(
     (state: { post: PostState }) => state.post,
   );
-
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  // const [selectedPostDetails, setSelectedPostDetails] = useState<Post | null>(
-  //   null,
-  // );
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
@@ -58,7 +56,7 @@ function Posts() {
           <h2>Publicações</h2>
           <p className="subtitle">Gerencie as postagens da sua loja</p>
         </div>
-        <button className="btn-create">
+        <button className="btn-create" onClick={() => setIsOpenModal(true)}>
           <BsPlus size={24} /> Novo
         </button>
       </header>
@@ -90,7 +88,7 @@ function Posts() {
                         {post.name || "Post sem nome"}
                       </strong>
                       <span className="post-date">
-                        {formatDate(post.createdAt)}
+                        {/* {formatDate(post.createdAt)} */}
                       </span>
                     </div>
                   </div>
@@ -116,8 +114,7 @@ function Posts() {
                     </span>
                   </div>
                   <p className="post-description">
-                    Confira os detalhes deste item disponível no estoque. Clique
-                    em "Ver detalhes" para informações técnicas completas.
+                    {post.description || "Sem descrição disponível."}
                   </p>
                 </div>
 
@@ -148,7 +145,7 @@ function Posts() {
           )}
         </div>
       )}
-
+      <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
       <View
         visible={isViewOpen}
         onClose={() => setIsViewOpen(false)}

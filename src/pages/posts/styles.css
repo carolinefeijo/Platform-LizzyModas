@@ -136,8 +136,8 @@
 }
 
 .tag.price {
-  background: #e7f1ff;
-  color: var(--primary);
+  background: var(--success);
+  color: white;
 }
 
 .post-description {

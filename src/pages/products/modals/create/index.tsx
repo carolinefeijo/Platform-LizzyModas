@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setCreateProductRequest } from "../../../../store/features/product/productSlice";
 import Modal from "../../../../components/Modal";
 import "./styles.css";
+import { formatBRL, onlyDigits, parseToNumber } from "../../../../utils";
 
 function Create({
   visible,
@@ -16,24 +17,6 @@ function Create({
   const [description, setDescription] = useState("");
   const [priceText, setPriceText] = useState("");
   const [error, setError] = useState("");
-
-  const onlyDigits = (s: string) => s.replace(/\D/g, "");
-
-  const formatBRL = (digits: string) => {
-    if (!digits) return "";
-
-    const numberValue = parseInt(digits, 10);
-
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(numberValue / 100);
-  };
-
-  const parseToNumber = (value: string) => {
-    const digits = onlyDigits(value);
-    return digits ? parseInt(digits, 10) : 0;
-  };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const digits = onlyDigits(e.target.value);
@@ -58,9 +41,7 @@ function Create({
       setError("Por favor, preencha o nome e o preço.");
       return;
     }
-
     const priceInCents = parseToNumber(priceText);
-
     dispatch(
       setCreateProductRequest({
         name,
