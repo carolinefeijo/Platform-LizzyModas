@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../../../../components/Modal";
 import type { Post } from "../../../../store/features/post/types";
 import {
@@ -25,10 +25,6 @@ interface ViewProps {
 function View({ visible, onClose, post, loading }: ViewProps) {
   const [isZoomed, setIsZoomed] = useState(false);
 
-  useEffect(() => {
-    console.log({ post });
-  }, []);
-
   return (
     <Modal title="Visualizar Publicação" onClose={onClose} visible={visible}>
       <div className="view-container">
@@ -43,7 +39,7 @@ function View({ visible, onClose, post, loading }: ViewProps) {
                 className={`image-wrapper ${isZoomed ? "zoomed" : ""}`}
                 onClick={() => setIsZoomed(!isZoomed)}
               >
-                <img src={post.image || notFound} alt={post.name} />
+                <img src={post.image || notFound} />
                 <div className="zoom-overlay">
                   <BsZoomIn />
                   <span>

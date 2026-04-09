@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Modal from "../../../../components/Modal";
-import "./styles.css";
-import { onlyDigits } from "../../../../utils";
 import { setCreatePostRequest } from "../../../../store/features/post/postSlice";
+import { formatBRL, onlyDigits } from "../../../../utils";
+import "./styles.css";
 
 function Create({
   visible,
@@ -31,8 +31,15 @@ function Create({
     }
   };
 
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = onlyDigits(e.target.value);
+    if (digits.length > 12) return;
+    setPrice(digits === "" ? "" : formatBRL(digits));
+  };
+
   const handleOnClose = () => {
     setImage(null);
+    setPreview(null);
     setName("");
     setDescription("");
     setCategory("");
@@ -43,6 +50,8 @@ function Create({
   };
 
   const handleCreate = () => {
+    const storedUserId = localStorage.getItem("userId");
+
     if (!name || !price || !category) {
       setError(
         "Por favor, preencha os campos obrigatórios: nome, preço e categoria.",
@@ -54,10 +63,12 @@ function Create({
       name,
       description,
       category,
+      size,
       price: Number(onlyDigits(price)),
-      userId: 71,
+      userId: Number(storedUserId),
       image,
     };
+
     console.log({ enviadoPayload: payload });
     dispatch(setCreatePostRequest(payload));
     handleOnClose();
@@ -102,8 +113,7 @@ function Create({
 
         <div className="form-group">
           <label>Descrição</label>
-          <input
-            type="text"
+          <textarea
             className="form-input"
             placeholder="ex: Calca muito confortavel, ideal para o dia a dia"
             value={description}
@@ -118,7 +128,7 @@ function Create({
             className="form-input"
             placeholder="R$ 0,00"
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={handlePriceChange}
           />
         </div>
 

@@ -37,6 +37,9 @@ function* setCreatePostSaga(
     formData.append("description", action.payload.description || "");
     formData.append("size", action.payload.size || "");
     formData.append("userId", String(action.payload.userId));
+    if (action.payload.image) {
+      formData.append("image", action.payload.image);
+    }
 
     const { data: response }: { data: Post } = yield call(
       api.post,

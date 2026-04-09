@@ -8,7 +8,7 @@ import {
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { formatPrice } from "../../utils";
+import { formatDate, formatPrice } from "../../utils";
 import type { Post } from "../../store/features/post/types";
 import {
   fetchPostDetailsRequest,
@@ -88,7 +88,7 @@ function Posts() {
                         {post.name || "Post sem nome"}
                       </strong>
                       <span className="post-date">
-                        {/* {formatDate(post.createdAt)} */}
+                        {formatDate(post.createdAt)}
                       </span>
                     </div>
                   </div>

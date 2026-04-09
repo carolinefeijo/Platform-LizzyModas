@@ -36,6 +36,7 @@
   font-size: 1rem;
   transition: all 0.2s ease;
   outline: none;
+  font-family: "Quicksand";
 }
 
 .form-input:focus {

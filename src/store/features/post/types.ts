@@ -27,7 +27,7 @@ type UserMeta = {
 };
 
 export type CreatePostPayload = {
-  image?: File | null;
+  image?: string | File | null;
   name: string;
   price: number;
   category: string;

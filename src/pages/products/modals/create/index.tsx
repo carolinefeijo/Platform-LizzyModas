@@ -21,11 +21,8 @@ function Create({
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const digits = onlyDigits(e.target.value);
     if (digits.length > 12) return;
-    if (digits === "") {
-      setPriceText("");
-    } else {
-      setPriceText(formatBRL(digits));
-    }
+
+    setPriceText(digits === "" ? "" : formatBRL(digits));
   };
 
   const handleOnClose = () => {
