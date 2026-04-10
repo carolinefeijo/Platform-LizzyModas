@@ -1,28 +1,35 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import Modal from "../../../../components/Modal";
-import { setCreatePostRequest } from "../../../../store/features/post/postSlice";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, useRef } from "react";
 import { formatBRL, onlyDigits } from "../../../../utils";
+import Modal from "../../../../components/Modal";
 import "./styles.css";
+import type { Post } from "../../../../store/features/post/types";
 
-function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void, 
-  post: Post || null
- }) {
-  const dispatch = useDispatch();
-  const [image, setImage] = useState<File | null>(null);
+function Edit({
+  visible,
+  onClose,
+  post,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  post: Post | null;
+}) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [size, setSize] = useState("");
   const [price, setPrice] = useState("");
   const [error, setError] = useState("");
+
+  const [fileName, setFileName] = useState("Nenhum arquivo selecionado");
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (file) {
-      setImage(file);
+      setFileName(file.name);
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -34,7 +41,7 @@ function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void
   };
 
   const handleOnClose = () => {
-    setImage(null);
+    setFileName("Nenhum arquivo selecionado");
     setPreview(null);
     setName("");
     setDescription("");
@@ -45,52 +52,95 @@ function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void
     onClose();
   };
 
-  const handleCreate = () => {
-    const storedUserId = localStorage.getItem("userId");
+  const updateState = () => {
+    if (!post) return;
 
-    if (!name || !price || !category) {
-      setError(
-        "Por favor, preencha os campos obrigatórios: nome, preço e categoria.",
-      );
-      return;
+    setName(post.name);
+    setDescription(post.description || "");
+    setCategory(post.category);
+    setSize(post.size || "");
+
+    const initialPriceDigits = post.price.toString();
+    setPrice(formatBRL(initialPriceDigits));
+
+    if (post.image) {
+      setPreview(post.image);
+      const nameFromUrl = post.image.split("/").pop() || "";
+      const cleanName = nameFromUrl.includes("-")
+        ? nameFromUrl.split("-").slice(1).join("-")
+        : nameFromUrl;
+      setFileName(cleanName || "imagem_atual.jpeg");
+    } else {
+      setFileName("Nenhum arquivo selecionado");
+      setPreview(null);
     }
 
-    const payload = {
-      name,
-      description,
-      category,
-      size,
-      price: Number(onlyDigits(price)),
-      userId: Number(storedUserId),
-      image,
-    };
-
-    console.log({ enviadoPayload: payload });
-    dispatch(setCreatePostRequest(payload));
-    handleOnClose();
+    setError("");
   };
 
+  useEffect(() => {
+    if (visible) {
+      updateState();
+    }
+  }, [post, visible]);
+
+  if (!post) return null;
+
   return (
-    <Modal title="Criar novo post" onClose={handleOnClose} visible={visible}>
-      <div className="modal-form">
-        <p className="modal-subtitle">Preencha as informações do novo post.</p>
+    <Modal title="Editar post" onClose={handleOnClose} visible={visible}>
+      <div className="modal-form-edit">
+        <p className="modal-subtitle">Atualize as informações do post.</p>
 
         <div className="form-group">
           <label>Imagem do produto</label>
+
           <input
             type="file"
-            className="form-input"
+            ref={fileInputRef}
+            style={{ display: "none" }}
             accept="image/*"
             onChange={handleImageChange}
           />
 
+          <div
+            className="form-input"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+              background: "#fff",
+              padding: "4px 8px",
+            }}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <button
+              type="button"
+              style={{
+                padding: "2px 10px",
+                background: "#efefef",
+                border: "1px solid #767676",
+                borderRadius: "2px",
+                fontSize: "13px",
+              }}
+            >
+              Escolher arquivo
+            </button>
+            <span style={{ fontSize: "13px", color: "#333" }}>{fileName}</span>
+          </div>
+
           {preview && (
-            <div style={{ marginTop: "0px" }}>
-              <p>Preview:</p>
+            <div style={{ marginTop: "10px", textAlign: "center" }}>
               <img
                 src={preview}
-                alt="Preview do produto"
-                style={{ width: "200px", height: "auto", borderRadius: "8px" }}
+                alt="Preview"
+                style={{
+                  width: "100%",
+                  maxHeight: "150px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                  border: "1px solid #eee",
+                }}
               />
             </div>
           )}
@@ -101,7 +151,6 @@ function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void
           <input
             type="text"
             className="form-input"
-            placeholder="Ex: Calça Jeans"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -111,7 +160,6 @@ function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void
           <label>Descrição</label>
           <textarea
             className="form-input"
-            placeholder="ex: Calca muito confortavel, ideal para o dia a dia"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -122,7 +170,6 @@ function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void
           <input
             type="text"
             className="form-input"
-            placeholder="R$ 0,00"
             value={price}
             onChange={handlePriceChange}
           />
@@ -172,8 +219,8 @@ function Edit({ visible, onClose,post }: { visible: boolean; onClose: () => void
           <button className="btn-cancel" onClick={handleOnClose}>
             Cancelar
           </button>
-          <button className="btn-submit" onClick={handleCreate}>
-            Criar post
+          <button className="btn-submit" onClick={() => {}}>
+            Salvar Alterações
           </button>
         </div>
       </div>

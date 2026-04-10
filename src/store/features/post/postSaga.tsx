@@ -7,9 +7,17 @@ import {
   fetchPostsSuccess,
   setCreatePostRequest,
   setCreatePostSuccess,
+  setEditPostRequest,
+  setEditPostSuccess,
 } from "./postSlice";
-import type { CreatePostPayload, Post, PostsResponse } from "./types";
+import type {
+  CreatePostPayload,
+  EditPostPayload,
+  Post,
+  PostsResponse,
+} from "./types";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 // listar todos os posts
 function* fetchPostsSaga(): Generator {
@@ -46,7 +54,6 @@ function* setCreatePostSaga(
       "/posts",
       formData,
     );
-    console.log({ saga: response });
     yield put(setCreatePostSuccess({ post: response }));
   } catch (error) {
     console.log(error);
@@ -62,9 +69,30 @@ function* fetchPostDetailsSaga(action: PayloadAction<Post>): Generator {
       `/posts/${id}`,
     );
     yield put(fetchPostDetailsSuccess({ data: response }));
-    console.log({ modal: id, response });
   } catch (error) {
     console.log(error);
+  }
+}
+
+// editar post
+function* setEditPostSaga(action: PayloadAction<EditPostPayload>): Generator {
+  try {
+    const id = action.payload.post.id;
+    const body = action.payload.post;
+
+    const { data: response }: { data: Post } = yield call(
+      api.put,
+      `/post/${id}`,
+      body,
+    );
+    yield put(
+      setEditPostSuccess({
+        post: response,
+      }),
+    );
+    toast.success("Produto editado com sucesso!");
+  } catch {
+    toast.error("Erro ao editar produto. Tente novamente.");
   }
 }
 
@@ -72,4 +100,5 @@ export default function* postSaga() {
   yield takeLatest(fetchPostsRequest.type, fetchPostsSaga);
   yield takeLatest(fetchPostDetailsRequest.type, fetchPostDetailsSaga);
   yield takeLatest(setCreatePostRequest.type, setCreatePostSaga);
+  yield takeLatest(setEditPostRequest.type, setEditPostSaga);
 }

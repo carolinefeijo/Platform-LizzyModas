@@ -16,10 +16,11 @@ import {
   type PostState,
 } from "../../store/features/post/postSlice";
 import Loading from "../../components/Loading";
-import ShareModal from "./modais/share";
+// import ShareModal from "./modais/share";
 import View from "./modais/view";
 import Create from "./modais/create";
 import "./styles.css";
+import Edit from "./modais/edit";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -27,18 +28,19 @@ function Posts() {
     (state: { post: PostState }) => state.post,
   );
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  // const [isShareOpen, setIsShareOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selected, setSelected] = useState<Post | null>(null);
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
   }, [dispatch]);
 
-  const handleOpenShare = (post: Post) => {
-    setSelectedPost(post);
-    setIsShareOpen(true);
-  };
+  // const handleOpenShare = (post: Post) => {
+  //   setSelected(post);
+  //   setIsShareOpen(true);
+  // };
 
   const handleOpenView = (id: number) => {
     dispatch(
@@ -94,7 +96,14 @@ function Posts() {
                   </div>
 
                   <div className="admin-actions">
-                    <button className="btn-minimal edit" title="Editar">
+                    <button
+                      className="btn-minimal edit"
+                      title="Editar"
+                      onClick={() => {
+                        setSelected(post);
+                        setIsOpenEditModal(true);
+                      }}
+                    >
                       <BsPencilSquare size={18} />
                     </button>
                     <button className="btn-minimal delete" title="Excluir">
@@ -126,7 +135,7 @@ function Posts() {
                     </button>
                     <button
                       className="btn-social share"
-                      onClick={() => handleOpenShare(post)}
+                      // onClick={() => handleOpenShare(post)}
                     >
                       <BsShare size={18} />
                       <span>Compartilhar</span>
@@ -146,6 +155,17 @@ function Posts() {
         </div>
       )}
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
+      {/* <Edit
+        visible={isOpenEditModal}
+        onClose={() => setIsOpenEditModal(false)}
+        post={selected}
+      /> */}
+      <Edit
+        key={selected?.id || "new"} // Isso força o reset do estado interno do Edit
+        visible={isOpenEditModal}
+        onClose={() => setIsOpenEditModal(false)}
+        post={selected}
+      />
       <View
         visible={isViewOpen}
         onClose={() => setIsViewOpen(false)}
@@ -153,11 +173,11 @@ function Posts() {
         loading={loadingDetails}
       />
 
-      <ShareModal
+      {/* <ShareModal
         visible={isShareOpen}
         onClose={() => setIsShareOpen(false)}
-        post={selectedPost}
-      />
+        post={selected}
+      /> */}
     </div>
   );
 }

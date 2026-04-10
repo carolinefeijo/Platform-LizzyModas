@@ -36,6 +36,11 @@ export type CreatePostPayload = {
   userId: number;
 };
 
+export type EditPostPayload = {
+  id: string;
+  post: Post;
+};
+
 export type PostsResponse = {
   data: Post[];
   meta: UserMeta;
@@ -68,6 +73,18 @@ export type PayloadActions = {
     payload: CreatePostPayload;
   };
   setCreatePostSuccess: {
+    type: string;
+    payload: {
+      post: Post;
+    };
+  };
+  setEditPostRequest: {
+    type: string;
+    payload: {
+      post: Partial<Post>;
+    };
+  };
+  setEditPostSuccess: {
     type: string;
     payload: {
       post: Post;

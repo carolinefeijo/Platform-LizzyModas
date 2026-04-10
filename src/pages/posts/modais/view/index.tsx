@@ -25,6 +25,10 @@ interface ViewProps {
 function View({ visible, onClose, post, loading }: ViewProps) {
   const [isZoomed, setIsZoomed] = useState(false);
 
+  const handleOnClose = () => {
+    onClose();
+  };
+
   return (
     <Modal title="Visualizar Publicação" onClose={onClose} visible={visible}>
       <div className="view-container">
@@ -126,6 +130,11 @@ function View({ visible, onClose, post, loading }: ViewProps) {
                   <p>{post.count?.likes || "0"}</p>
                 </div>
               </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn-cancel" onClick={handleOnClose}>
+                Fechar
+              </button>
             </div>
           </div>
         )}

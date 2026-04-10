@@ -1,13 +1,27 @@
-.modal-form {
+.modal-form-add {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 500px;
-  padding-bottom: 10px;
-  max-height: 80vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-right: 8px;
+  width: 90%; /* Mude para 100% para preencher o padding do modal-content */
+  padding: 0 10px 20px 0; /* Padding na direita para não colar no scroll */
+
+  /* CONTROLE DE SCROLL */
+  max-height: 70vh; /* Limita a altura a 70% da altura da tela */
+  overflow-y: auto; /* 'auto' faz o scroll aparecer só se precisar */
+  overflow-x: hidden; /* Evita scroll horizontal indesejado */
+
+  /* Melhoria visual do scroll (opcional) */
+  scrollbar-width: thin; /* Para Firefox */
+}
+
+/* Personalização do scroll para Chrome/Edge/Safari */
+.modal-form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-form::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
 }
 
 .modal-subtitle {

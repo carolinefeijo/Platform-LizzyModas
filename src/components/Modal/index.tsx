@@ -1,9 +1,9 @@
-import { BsXCircleFill } from "react-icons/bs";
+// import { BsXCircleFill } from "react-icons/bs";
 import "./styles.css";
 
 function Modal({
   children,
-  onClose,
+  // onClose,
   visible,
   title,
 }: {
@@ -19,10 +19,10 @@ function Modal({
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <div className="modal-close-wrapper" onClick={onClose}>
+        {/* <div className="modal-close-wrapper" onClick={onClose}>
           <BsXCircleFill size={22} color="#000" />
-        </div>
-        <h2 className="modal-title">{title}</h2>
+        </div> */}
+        <h2 className="title">{title}</h2>
         {children}
       </div>
     </div>

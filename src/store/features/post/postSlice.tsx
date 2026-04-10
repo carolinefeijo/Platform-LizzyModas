@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import type { PayloadActions, Post } from "./types";
 
 export interface PostState {
@@ -57,6 +57,27 @@ export const postSlice = createSlice({
       const newPost = action.payload.post;
       state.posts = [newPost, ...state.posts];
     },
+    setEditPostRequest: (
+      state,
+      _action: PayloadActions["setEditPostRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setEditPostSuccess: (
+      state,
+      action: PayloadActions["setEditPostSuccess"],
+    ) => {
+      const currentState = current(state);
+      const posts = currentState.posts;
+      const postEdit = action.payload.post;
+      const newList = posts?.map((post) => {
+        if (post.id === postEdit.id) {
+          return postEdit;
+        }
+        return post;
+      });
+      state.posts = newList;
+    },
   },
 });
 
@@ -67,6 +88,8 @@ export const {
   fetchPostDetailsSuccess,
   setCreatePostRequest,
   setCreatePostSuccess,
+  setEditPostRequest,
+  setEditPostSuccess,
 } = postSlice.actions;
 
 export default postSlice.reducer;

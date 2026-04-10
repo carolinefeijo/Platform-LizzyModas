@@ -69,14 +69,13 @@ function Create({
       image,
     };
 
-    console.log({ enviadoPayload: payload });
     dispatch(setCreatePostRequest(payload));
     handleOnClose();
   };
 
   return (
     <Modal title="Criar novo post" onClose={handleOnClose} visible={visible}>
-      <div className="modal-form">
+      <div className="modal-form-add">
         <p className="modal-subtitle">Preencha as informações do novo post.</p>
 
         <div className="form-group">
