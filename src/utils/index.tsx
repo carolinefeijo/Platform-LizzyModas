@@ -14,7 +14,8 @@ export const formatDate = (dateString: string) => {
 
 // Formata um número (ex: 1500.5) para R$ 1.500,50
 export const formatPrice = (price: number) => {
-  return price.toLocaleString("pt-BR", {
+  // Aqui está o segredo: dividimos por 100 na hora de EXIBIR
+  return (price / 100).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
@@ -37,6 +38,15 @@ export const formatBRL = (digits: string) => {
 export const parseToNumber = (value: string) => {
   const digits = onlyDigits(value);
   return digits ? parseInt(digits, 10) : 0;
+};
+
+export const handlePriceMask = (value: string) => {
+  const digits = onlyDigits(value);
+
+  // Limite opcional de caracteres (ex: 12 dígitos para evitar quebras de layout)
+  if (digits.length > 12) return null;
+
+  return digits === "" ? "" : formatBRL(digits);
 };
 
 // Função de compartilhamento

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Modal from "../../../../components/Modal";
 import { setCreatePostRequest } from "../../../../store/features/post/postSlice";
-import { formatBRL, onlyDigits } from "../../../../utils";
+import { handlePriceMask, onlyDigits } from "../../../../utils";
 import "./styles.css";
 
 function Create({
@@ -32,9 +32,10 @@ function Create({
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digits = onlyDigits(e.target.value);
-    if (digits.length > 12) return;
-    setPrice(digits === "" ? "" : formatBRL(digits));
+    const formattedValue = handlePriceMask(e.target.value);
+    if (formattedValue !== null) {
+      setPrice(formattedValue);
+    }
   };
 
   const handleOnClose = () => {
@@ -104,7 +105,7 @@ function Create({
           <input
             type="text"
             className="form-input"
-            placeholder="Ex: Calça Jeans"
+            placeholder="Ex: Live relampago"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -114,7 +115,7 @@ function Create({
           <label>Descrição</label>
           <textarea
             className="form-input"
-            placeholder="ex: Calca muito confortavel, ideal para o dia a dia"
+            placeholder="ex: teremos live na quarta feira as 20hrs"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -139,6 +140,7 @@ function Create({
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">Selecione uma categoria</option>
+            <option value="live">Live</option>
             <option value="roupas femininas">Roupas Femininas</option>
             <option value="roupas masculinas">Roupas Masculinas</option>
             <option value="roupas infantis">Roupas Infantils</option>
@@ -154,6 +156,7 @@ function Create({
             onChange={(e) => setSize(e.target.value)}
           >
             <option value="">Selecione um tamanho</option>
+            <option value="--">--</option>
             <option value="PP">PP</option>
             <option value="P">P</option>
             <option value="M">M</option>
