@@ -10,12 +10,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuthRequest } from "./store/features/login/loginSlice";
 import type { UserState } from "./store/features/user/userSlice";
-import Loading from "./components/Loading";
 import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector(
+  const { isAuthenticated } = useSelector(
     (state: { login: UserState }) => state.login,
   );
 
