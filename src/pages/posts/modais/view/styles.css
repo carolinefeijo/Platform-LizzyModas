@@ -1,8 +1,8 @@
 .view-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
+  gap: 15px;
+  width: 90%;
   padding-bottom: 10px;
   max-height: 80vh;
   overflow-y: auto;

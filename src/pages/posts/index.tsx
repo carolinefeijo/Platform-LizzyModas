@@ -155,13 +155,8 @@ function Posts() {
         </div>
       )}
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
-      {/* <Edit
-        visible={isOpenEditModal}
-        onClose={() => setIsOpenEditModal(false)}
-        post={selected}
-      /> */}
+
       <Edit
-        key={selected?.id || "new"} // Isso força o reset do estado interno do Edit
         visible={isOpenEditModal}
         onClose={() => setIsOpenEditModal(false)}
         post={selected}

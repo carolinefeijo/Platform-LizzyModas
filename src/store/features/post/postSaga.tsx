@@ -82,7 +82,7 @@ function* setEditPostSaga(action: PayloadAction<EditPostPayload>): Generator {
 
     const { data: response }: { data: Post } = yield call(
       api.put,
-      `/post/${id}`,
+      `/posts/${id}`,
       body,
     );
     yield put(

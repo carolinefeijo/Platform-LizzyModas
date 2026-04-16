@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useRef } from "react";
-import { formatBRL, onlyDigits } from "../../../../utils";
+import { formatBRL, handlePriceMask, parseToNumber } from "../../../../utils";
 import Modal from "../../../../components/Modal";
-import "./styles.css";
 import type { Post } from "../../../../store/features/post/types";
+import { setEditPostRequest } from "../../../../store/features/post/postSlice";
+import { useDispatch } from "react-redux";
+import "./styles.css";
 
 function Edit({
   visible,
@@ -14,43 +16,19 @@ function Edit({
   onClose: () => void;
   post: Post | null;
 }) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [size, setSize] = useState("");
   const [price, setPrice] = useState("");
+
   const [error, setError] = useState("");
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("Nenhum arquivo selecionado");
   const [preview, setPreview] = useState<string | null>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digits = onlyDigits(e.target.value);
-    if (digits.length > 12) return;
-    setPrice(digits === "" ? "" : formatBRL(digits));
-  };
-
-  const handleOnClose = () => {
-    setFileName("Nenhum arquivo selecionado");
-    setPreview(null);
-    setName("");
-    setDescription("");
-    setCategory("");
-    setSize("");
-    setPrice("");
-    setError("");
-    onClose();
-  };
+  const [image, setImage] = useState<File | null>(null);
 
   const updateState = () => {
     if (!post) return;
@@ -78,6 +56,50 @@ function Edit({
     setError("");
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = handlePriceMask(e.target.value);
+    if (formattedValue !== null) {
+      setPrice(formattedValue);
+    }
+  };
+
+  const handleOnClose = () => {
+    setFileName("Nenhum arquivo selecionado");
+    setPreview(null);
+    setImage(null);
+    setName("");
+    setDescription("");
+    setCategory("");
+    setSize("");
+    setPrice("");
+    setError("");
+    onClose();
+  };
+
+  const handleEdit = () => {
+    if (!post) return;
+
+    const newPost: Partial<Post> = {
+      id: post.id,
+      name,
+      description,
+      category,
+      price: parseToNumber(price),
+      image,
+    };
+    dispatch(setEditPostRequest({ post: newPost }));
+    onClose();
+  };
+
   useEffect(() => {
     if (visible) {
       updateState();
@@ -89,7 +111,7 @@ function Edit({
   return (
     <Modal title="Editar post" onClose={handleOnClose} visible={visible}>
       <div className="modal-form-edit">
-        <p className="modal-subtitle">Atualize as informações do post.</p>
+        <p className="modal-subtitle">Atualize as informações do post</p>
 
         <div className="form-group">
           <label>Imagem do produto</label>
@@ -183,6 +205,7 @@ function Edit({
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">Selecione uma categoria</option>
+            <option value="live">Live</option>
             <option value="roupas femininas">Roupas Femininas</option>
             <option value="roupas masculinas">Roupas Masculinas</option>
             <option value="roupas infantis">Roupas Infantils</option>
@@ -198,6 +221,7 @@ function Edit({
             onChange={(e) => setSize(e.target.value)}
           >
             <option value="">Selecione um tamanho</option>
+            <option value="--">--</option>
             <option value="PP">PP</option>
             <option value="P">P</option>
             <option value="M">M</option>
@@ -219,8 +243,8 @@ function Edit({
           <button className="btn-cancel" onClick={handleOnClose}>
             Cancelar
           </button>
-          <button className="btn-submit" onClick={() => {}}>
-            Salvar Alterações
+          <button className="btn-submit" onClick={handleEdit}>
+            Salvar edição
           </button>
         </div>
       </div>

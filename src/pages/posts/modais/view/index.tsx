@@ -32,6 +32,7 @@ function View({ visible, onClose, post, loading }: ViewProps) {
   return (
     <Modal title="Visualizar Publicação" onClose={onClose} visible={visible}>
       <div className="view-container">
+        <p className="modal-subtitle">Veja as informações do post</p>
         {loading || !post ? (
           <div className="view-loading-state">
             <Loading />

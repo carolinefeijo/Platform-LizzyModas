@@ -2,19 +2,14 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 90%; /* Mude para 100% para preencher o padding do modal-content */
-  padding: 0 10px 20px 0; /* Padding na direita para não colar no scroll */
-
-  /* CONTROLE DE SCROLL */
-  max-height: 70vh; /* Limita a altura a 70% da altura da tela */
-  overflow-y: auto; /* 'auto' faz o scroll aparecer só se precisar */
-  overflow-x: hidden; /* Evita scroll horizontal indesejado */
-
-  /* Melhoria visual do scroll (opcional) */
-  scrollbar-width: thin; /* Para Firefox */
+  width: 90%;
+  padding: 0 10px 20px 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
 }
 
-/* Personalização do scroll para Chrome/Edge/Safari */
 .modal-form::-webkit-scrollbar {
   width: 6px;
 }
