@@ -7,13 +7,6 @@
   --text-main: #333;
 }
 
-.container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  color: var(--text-main);
-}
-
 .header-actions {
   display: flex;
   justify-content: space-between;

@@ -68,3 +68,21 @@ export const getShareLink = (platform: "wa" | "fb" | "ig", post: Post) => {
 
   return links[platform];
 };
+
+export const preparePostForEdit = (post: Post) => {
+  // Lógica para limpar o nome do arquivo da URL
+  const nameFromUrl = post.image?.split("/").pop() || "";
+  const cleanFileName = nameFromUrl.includes("-")
+    ? nameFromUrl.split("-").slice(1).join("-")
+    : nameFromUrl;
+
+  return {
+    name: post.name,
+    description: post.description || "",
+    category: post.category,
+    size: post.size || "",
+    formattedPrice: post.price.toString(),
+    fileName: cleanFileName || "imagem_atual.jpeg",
+    preview: post.image || null,
+  };
+};

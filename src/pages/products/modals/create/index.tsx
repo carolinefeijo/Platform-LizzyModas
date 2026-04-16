@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCreateProductRequest } from "../../../../store/features/product/productSlice";
 import Modal from "../../../../components/Modal";
-import "./styles.css";
 import { formatBRL, onlyDigits, parseToNumber } from "../../../../utils";
+import "./styles.css";
 
 function Create({
   visible,

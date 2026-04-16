@@ -74,17 +74,30 @@ function* fetchPostDetailsSaga(action: PayloadAction<Post>): Generator {
   }
 }
 
-// editar post
 function* setEditPostSaga(action: PayloadAction<EditPostPayload>): Generator {
   try {
-    const id = action.payload.post.id;
-    const body = action.payload.post;
+    const { post } = action.payload;
+    const id = post.id;
+
+    const formData = new FormData();
+
+    formData.append("name", post.name);
+    formData.append("description", post.description || "");
+    formData.append("category", post.category);
+    formData.append("price", post.price.toString());
+    formData.append("size", post.size || "");
+
+    const imageToUpload = post.image as unknown;
+    if (imageToUpload instanceof File) {
+      formData.append("image", imageToUpload);
+    }
 
     const { data: response }: { data: Post } = yield call(
       api.put,
       `/posts/${id}`,
-      body,
+      formData,
     );
+
     yield put(
       setEditPostSuccess({
         post: response,

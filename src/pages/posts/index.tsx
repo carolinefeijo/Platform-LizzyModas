@@ -155,7 +155,6 @@ function Posts() {
         </div>
       )}
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
-
       <Edit
         visible={isOpenEditModal}
         onClose={() => setIsOpenEditModal(false)}

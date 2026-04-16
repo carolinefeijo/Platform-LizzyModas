@@ -1,8 +1,17 @@
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  padding-top: 0.5rem;
+  gap: 20px;
+  width: 90%;
+  padding: 0 10px 20px 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.modal-form::-webkit-scrollbar {
+  width: 6px;
 }
 
 .modal-subtitle {

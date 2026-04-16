@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useRef } from "react";
-import { formatBRL, handlePriceMask, parseToNumber } from "../../../../utils";
+import {
+  formatBRL,
+  handlePriceMask,
+  parseToNumber,
+  preparePostForEdit,
+} from "../../../../utils";
 import Modal from "../../../../components/Modal";
 import type { Post } from "../../../../store/features/post/types";
 import { setEditPostRequest } from "../../../../store/features/post/postSlice";
@@ -33,26 +38,14 @@ function Edit({
   const updateState = () => {
     if (!post) return;
 
-    setName(post.name);
-    setDescription(post.description || "");
-    setCategory(post.category);
-    setSize(post.size || "");
-
-    const initialPriceDigits = post.price.toString();
-    setPrice(formatBRL(initialPriceDigits));
-
-    if (post.image) {
-      setPreview(post.image);
-      const nameFromUrl = post.image.split("/").pop() || "";
-      const cleanName = nameFromUrl.includes("-")
-        ? nameFromUrl.split("-").slice(1).join("-")
-        : nameFromUrl;
-      setFileName(cleanName || "imagem_atual.jpeg");
-    } else {
-      setFileName("Nenhum arquivo selecionado");
-      setPreview(null);
-    }
-
+    const data = preparePostForEdit(post);
+    setName(data.name);
+    setDescription(data.description);
+    setCategory(data.category);
+    setSize(data.size);
+    setPrice(formatBRL(data.formattedPrice));
+    setPreview(data.preview);
+    setFileName(data.fileName);
     setError("");
   };
 
@@ -94,7 +87,8 @@ function Edit({
       description,
       category,
       price: parseToNumber(price),
-      image,
+      size,
+      image: image as unknown as string,
     };
     dispatch(setEditPostRequest({ post: newPost }));
     onClose();
