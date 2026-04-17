@@ -1,5 +1,6 @@
 // src/utils/index.ts
 import type { Post } from "../store/features/post/types";
+import type { Product } from "../store/features/product/types";
 
 // Formatar data: DD/MM/YY
 export const formatDate = (dateString: string) => {
@@ -84,5 +85,13 @@ export const preparePostForEdit = (post: Post) => {
     formattedPrice: post.price.toString(),
     fileName: cleanFileName || "imagem_atual.jpeg",
     preview: post.image || null,
+  };
+};
+
+export const prepareProductForEdit = (product: Product) => {
+  return {
+    name: product.name,
+    description: product.description || "",
+    formattedPrice: product.price.toString(),
   };
 };

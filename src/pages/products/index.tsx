@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { Product } from "../../store/features/product/types";
 import {
   fetchProductsRequest,
   fetchProductSearchRequest,
   type ProductState,
 } from "../../store/features/product/productSlice";
-import { useDispatch, useSelector } from "react-redux";
 import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete ";
 import SearchInput from "../../components/SearchInput";
 import Loading from "../../components/Loading";
 import { BsChevronDown, BsPencilSquare, BsPlus, BsTrash } from "react-icons/bs";
+import { formatDate, formatPrice } from "../../utils";
 import "./styles.css";
 
 function Products() {
@@ -81,9 +82,15 @@ function Products() {
                       <div className="avatar-circle">
                         {product.name.charAt(0).toUpperCase()}
                       </div>
-                      <strong className="product-name">
-                        {product.name || "Sem nome"}
-                      </strong>
+                      <div className="author-text">
+                        <strong className="product-name">
+                          {product.name || "Sem nome"}
+                        </strong>
+
+                        <span className="post-date">
+                          {formatDate(product.createdAt)}
+                        </span>
+                      </div>
                     </div>
 
                     <div className="action-group">
@@ -113,8 +120,18 @@ function Products() {
 
                   <div className="accordion-content">
                     <p>
+                      <strong>ID:</strong> {product.id}
+                    </p>
+
+                    <p>
+                      <strong>Criado por:</strong> {product.createdBy.name}
+                    </p>
+                    <p>
                       <strong>Descrição:</strong>{" "}
                       {product.description || "Sem descrição."}
+                    </p>
+                    <p>
+                      <strong>Preço:</strong> {formatPrice(product.price)}
                     </p>
                   </div>
                 </details>

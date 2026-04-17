@@ -4,6 +4,12 @@ import Modal from "../../../../components/Modal";
 import { useDispatch } from "react-redux";
 import type { Product } from "../../../../store/features/product/types";
 import { setEditProductResquest } from "../../../../store/features/product/productSlice";
+import {
+  formatBRL,
+  handlePriceMask,
+  parseToNumber,
+  prepareProductForEdit,
+} from "../../../../utils";
 import "./styles.css";
 
 function Edit({
@@ -19,45 +25,29 @@ function Edit({
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [priceText, setPriceText] = useState("");
+  const [price, setPrice] = useState("");
   const [error, setError] = useState("");
 
-  const onlyDigits = (s: string) => s.replace(/\D/g, "");
-
-  const formatBRL = (digits: string) => {
-    if (!digits) return "";
-    const numberValue = parseInt(digits, 10);
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(numberValue / 100);
-  };
-
-  const parseToNumber = (value: string) => {
-    const digits = onlyDigits(value);
-    return digits ? parseInt(digits, 10) : 0;
-  };
-
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digits = onlyDigits(e.target.value);
-    if (digits.length > 12) return;
-    setPriceText(digits === "" ? "" : formatBRL(digits));
+    const formattedValue = handlePriceMask(e.target.value);
+    if (formattedValue !== null) {
+      setPrice(formattedValue);
+    }
   };
 
   const updateState = () => {
     if (!product) return;
-    setName(product.name);
-    setDescription(product.description);
-
-    const initialPriceDigits = product.price.toString();
-    setPriceText(formatBRL(initialPriceDigits));
+    const data = prepareProductForEdit(product);
+    setName(data.name);
+    setDescription(data.description);
+    setPrice(formatBRL(data.formattedPrice));
     setError("");
   };
 
   const handleEdit = () => {
     if (!product) return;
 
-    if (!name || !priceText) {
+    if (!name || !price) {
       setError("Nome e preço são obrigatórios.");
       return;
     }
@@ -66,9 +56,8 @@ function Edit({
       id: product.id,
       name,
       description,
-      price: parseToNumber(priceText),
+      price: parseToNumber(price),
     };
-
     dispatch(setEditProductResquest({ product: newProduct }));
     onClose();
   };
@@ -116,7 +105,7 @@ function Edit({
             type="text"
             className="form-input"
             placeholder="R$ 0,00"
-            value={priceText}
+            value={price}
             onChange={handlePriceChange}
           />
         </div>
