@@ -116,7 +116,7 @@ function View({ visible, onClose, post, loading }: ViewProps) {
                   <BsPerson />
                 </div>
                 <div className="view-info">
-                  <label>Vendedor</label>
+                  <label>Criado por </label>
                   <p>{post.user?.name || "Usuário não encontrado"}</p>
                 </div>
               </div>

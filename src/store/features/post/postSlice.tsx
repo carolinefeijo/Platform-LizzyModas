@@ -78,6 +78,27 @@ export const postSlice = createSlice({
       });
       state.posts = newList;
     },
+    setDeletePostRequest: (
+      state,
+      _action: PayloadActions["setDeletePostRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setDeletePostSuccess: (
+      state,
+      action: PayloadActions["setDeletePostSuccess"],
+    ) => {
+      const currentState = current(state);
+      const posts = currentState.posts;
+
+      const newList = posts.filter((post) => {
+        if (post.id !== action.payload.id) {
+          return post;
+        }
+        return;
+      });
+      state.posts = newList;
+    },
   },
 });
 
@@ -90,6 +111,8 @@ export const {
   setCreatePostSuccess,
   setEditPostRequest,
   setEditPostSuccess,
+  setDeletePostRequest,
+  setDeletePostSuccess,
 } = postSlice.actions;
 
 export default postSlice.reducer;

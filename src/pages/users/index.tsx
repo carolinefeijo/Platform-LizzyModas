@@ -87,7 +87,9 @@ function Users() {
       ) : (
         <>
           {users?.length === 0 ? (
-            <p>Nada encontrado</p>
+            <div className="div-notfound">
+              <p>Nada funcionário encontrado !</p>
+            </div>
           ) : (
             <div className="accordion-list">
               {users?.map((user) => (

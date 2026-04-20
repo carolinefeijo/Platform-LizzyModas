@@ -19,8 +19,9 @@ import Loading from "../../components/Loading";
 // import ShareModal from "./modais/share";
 import View from "./modais/view";
 import Create from "./modais/create";
-import "./styles.css";
 import Edit from "./modais/edit";
+import "./styles.css";
+import Delete from "./modais/delete ";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -29,9 +30,11 @@ function Posts() {
   );
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   // const [isShareOpen, setIsShareOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [selected, setSelected] = useState<Post | null>(null);
+  const [postDeleted, setPostDeleted] = useState<Post | null>(null);
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
@@ -70,7 +73,9 @@ function Posts() {
       ) : (
         <div className="posts-feed">
           {posts?.length === 0 ? (
-            <p className="empty-msg">Nenhuma postagem encontrada.</p>
+            <div className="div-notfound">
+              <p className="empty-msg">Nenhuma postagem encontrada !</p>
+            </div>
           ) : (
             posts?.map((post) => (
               <article className="post-card" key={post.id}>
@@ -106,7 +111,14 @@ function Posts() {
                     >
                       <BsPencilSquare size={18} />
                     </button>
-                    <button className="btn-minimal delete" title="Excluir">
+                    <button
+                      className="btn-minimal delete"
+                      title="Excluir"
+                      onClick={() => {
+                        setPostDeleted(post);
+                        setIsOpenDeleteModal(true);
+                      }}
+                    >
                       <BsTrash size={18} />
                     </button>
                   </div>
@@ -165,6 +177,12 @@ function Posts() {
         onClose={() => setIsViewOpen(false)}
         post={postDetails}
         loading={loadingDetails}
+      />
+
+      <Delete
+        visible={isOpenDeleteModal}
+        onClose={() => setIsOpenDeleteModal(false)}
+        post={postDeleted}
       />
 
       {/* <ShareModal

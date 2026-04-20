@@ -41,6 +41,10 @@ export type EditPostPayload = {
   post: Post;
 };
 
+export type DeletePostPayload = {
+  id: number;
+};
+
 export type PostsResponse = {
   data: Post[];
   meta: UserMeta;
@@ -88,6 +92,18 @@ export type PayloadActions = {
     type: string;
     payload: {
       post: Post;
+    };
+  };
+  setDeletePostRequest: {
+    type: string;
+    payload: {
+      id: number;
+    };
+  };
+  setDeletePostSuccess: {
+    type: string;
+    payload: {
+      id: number;
     };
   };
 };

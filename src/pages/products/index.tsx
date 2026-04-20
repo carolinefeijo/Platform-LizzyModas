@@ -72,7 +72,9 @@ function Products() {
       ) : (
         <>
           {products?.length === 0 ? (
-            <p>Nada encontrado</p>
+            <div className="div-notfound">
+              <p>Nenhum produto encontrado !</p>
+            </div>
           ) : (
             <div className="accordion-list">
               {products?.map((product) => (

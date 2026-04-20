@@ -9,9 +9,12 @@ import {
   setCreatePostSuccess,
   setEditPostRequest,
   setEditPostSuccess,
+  setDeletePostRequest,
+  setDeletePostSuccess,
 } from "./postSlice";
 import type {
   CreatePostPayload,
+  DeletePostPayload,
   EditPostPayload,
   Post,
   PostsResponse,
@@ -74,6 +77,7 @@ function* fetchPostDetailsSaga(action: PayloadAction<Post>): Generator {
   }
 }
 
+// editar post
 function* setEditPostSaga(action: PayloadAction<EditPostPayload>): Generator {
   try {
     const { post } = action.payload;
@@ -109,9 +113,29 @@ function* setEditPostSaga(action: PayloadAction<EditPostPayload>): Generator {
   }
 }
 
+// deletar post
+function* setDeletePostSaga(
+  action: PayloadAction<DeletePostPayload>,
+): Generator {
+  try {
+    const id = action.payload.id;
+
+    yield call(api.delete, `/posts/${id}`);
+    yield put(
+      setDeletePostSuccess({
+        id,
+      }),
+    );
+    toast.success("Post deletado com sucesso!");
+  } catch {
+    toast.error("erro ao deletar post:");
+  }
+}
+
 export default function* postSaga() {
   yield takeLatest(fetchPostsRequest.type, fetchPostsSaga);
   yield takeLatest(fetchPostDetailsRequest.type, fetchPostDetailsSaga);
   yield takeLatest(setCreatePostRequest.type, setCreatePostSaga);
   yield takeLatest(setEditPostRequest.type, setEditPostSaga);
+  yield takeLatest(setDeletePostRequest.type, setDeletePostSaga);
 }
