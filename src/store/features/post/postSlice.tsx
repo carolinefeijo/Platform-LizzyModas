@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createSlice, current } from "@reduxjs/toolkit";
-import type { PayloadActions, Post } from "./types";
+import { createSlice, current, type PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadActions, Post, PostsResponse, UserMeta } from "./types";
 
 export interface PostState {
   loading: boolean;
@@ -8,6 +8,7 @@ export interface PostState {
   posts: Post[];
   postDetails: Post | null;
   loadingDetails: boolean;
+  meta: UserMeta | null; // Adicionado
 }
 
 const initialState: PostState = {
@@ -16,19 +17,22 @@ const initialState: PostState = {
   posts: [],
   postDetails: null,
   loadingDetails: false,
+  meta: null, // Adicionado
 };
 
 export const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    fetchPostsRequest: (state) => {
+    fetchPostsRequest: (state, _action: PayloadAction<{ page: number }>) => {
       state.loading = true;
-      state.posts = [];
+      // Removido state.posts = [] para não dar "pulo" na tela ao trocar de página
     },
-    fetchPostsSuccess: (state, action: PayloadActions["FetchPostsSuccess"]) => {
+
+    fetchPostsSuccess: (state, action: PayloadAction<PostsResponse>) => {
       state.loading = false;
       state.posts = action.payload.data;
+      state.meta = action.payload.meta;
     },
     fetchPostDetailsRequest: (
       state,

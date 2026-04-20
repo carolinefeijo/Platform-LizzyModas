@@ -23,14 +23,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
 // listar todos os posts
-function* fetchPostsSaga(): Generator {
+function* fetchPostsSaga(action: PayloadAction<{ page: number }>): Generator {
   try {
+    const { page } = action.payload;
     const { data: response }: { data: PostsResponse } = yield call(
       api.get,
-      "/posts",
+      `/posts?page=${page}&limit=5`,
     );
     yield put(fetchPostsSuccess(response));
-    // console.log({ response });
   } catch (error) {
     console.log(error);
   }

@@ -19,7 +19,7 @@ export type Post = {
   };
 };
 
-type UserMeta = {
+export type UserMeta = {
   total: number;
   page: number;
   limit: number;

@@ -5,6 +5,8 @@ import {
   BsEye,
   BsShare,
   BsHeart,
+  BsChevronLeft,
+  BsChevronRight,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -16,42 +18,45 @@ import {
   type PostState,
 } from "../../store/features/post/postSlice";
 import Loading from "../../components/Loading";
-// import ShareModal from "./modais/share";
 import View from "./modais/view";
 import Create from "./modais/create";
 import Edit from "./modais/edit";
-import "./styles.css";
 import Delete from "./modais/delete ";
+import "./styles.css";
 
 function Posts() {
   const dispatch = useDispatch();
-  const { posts, loading, loadingDetails, postDetails } = useSelector(
+  const { posts, loading, meta, loadingDetails, postDetails } = useSelector(
     (state: { post: PostState }) => state.post,
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  // const [isShareOpen, setIsShareOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [selected, setSelected] = useState<Post | null>(null);
   const [postDeleted, setPostDeleted] = useState<Post | null>(null);
 
   useEffect(() => {
-    dispatch(fetchPostsRequest());
-  }, [dispatch]);
-
-  // const handleOpenShare = (post: Post) => {
-  //   setSelected(post);
-  //   setIsShareOpen(true);
-  // };
+    dispatch(fetchPostsRequest({ page: currentPage }));
+  }, [dispatch, currentPage]);
 
   const handleOpenView = (id: number) => {
-    dispatch(
-      fetchPostDetailsRequest({
-        id,
-      }),
-    );
+    dispatch(fetchPostDetailsRequest({ id }));
     setIsViewOpen(true);
+  };
+
+  const handleNextPage = () => {
+    if (meta && currentPage < meta.totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
   };
 
   return (
@@ -71,101 +76,124 @@ function Posts() {
           <Loading />
         </div>
       ) : (
-        <div className="posts-feed">
-          {posts?.length === 0 ? (
-            <div className="div-notfound">
-              <p className="empty-msg">Nenhuma postagem encontrada !</p>
-            </div>
-          ) : (
-            posts?.map((post) => (
-              <article className="post-card" key={post.id}>
-                <div className="post-header">
-                  <div className="author-info">
-                    <div className="avatar-circle">
-                      {post.image ? (
-                        <img src={post.image} alt={post.name} />
-                      ) : (
-                        <div className="avatar-placeholder">
-                          {post.name?.charAt(0).toUpperCase()}
-                        </div>
-                      )}
+        <>
+          <div className="posts-feed">
+            {posts?.length === 0 ? (
+              <div className="div-notfound">
+                <p className="empty-msg">Nenhuma postagem encontrada !</p>
+              </div>
+            ) : (
+              posts?.map((post) => (
+                <article className="post-card" key={post.id}>
+                  <div className="post-header">
+                    <div className="author-info">
+                      <div className="avatar-circle">
+                        {post.image ? (
+                          <img src={post.image} alt={post.name} />
+                        ) : (
+                          <div className="avatar-placeholder">
+                            {post.name?.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="author-text">
+                        <strong className="product-name">
+                          {post.name || "Post sem nome"}
+                        </strong>
+                        <span className="post-date">
+                          {formatDate(post.createdAt)}
+                        </span>
+                      </div>
                     </div>
-                    <div className="author-text">
-                      <strong className="product-name">
-                        {post.name || "Post sem nome"}
-                      </strong>
-                      <span className="post-date">
-                        {formatDate(post.createdAt)}
-                      </span>
+
+                    <div className="admin-actions">
+                      <button
+                        className="btn-minimal edit"
+                        title="Editar"
+                        onClick={() => {
+                          setSelected(post);
+                          setIsOpenEditModal(true);
+                        }}
+                      >
+                        <BsPencilSquare size={18} />
+                      </button>
+                      <button
+                        className="btn-minimal delete"
+                        title="Excluir"
+                        onClick={() => {
+                          setPostDeleted(post);
+                          setIsOpenDeleteModal(true);
+                        }}
+                      >
+                        <BsTrash size={18} />
+                      </button>
                     </div>
                   </div>
 
-                  <div className="admin-actions">
-                    <button
-                      className="btn-minimal edit"
-                      title="Editar"
-                      onClick={() => {
-                        setSelected(post);
-                        setIsOpenEditModal(true);
-                      }}
-                    >
-                      <BsPencilSquare size={18} />
-                    </button>
-                    <button
-                      className="btn-minimal delete"
-                      title="Excluir"
-                      onClick={() => {
-                        setPostDeleted(post);
-                        setIsOpenDeleteModal(true);
-                      }}
-                    >
-                      <BsTrash size={18} />
-                    </button>
-                  </div>
-                </div>
-
-                <div
-                  className="post-body"
-                  onClick={() => handleOpenView(post.id)}
-                >
-                  <div className="post-tags">
-                    <span className="tag">{post.category || "Geral"}</span>
-                    <span className="tag price">
-                      {formatPrice(post.price || 0)}
-                    </span>
-                  </div>
-                  <p className="post-description">
-                    {post.description || "Sem descrição disponível."}
-                  </p>
-                </div>
-
-                <footer className="post-footer">
-                  <div className="social-group">
-                    <button className="btn-social like">
-                      <BsHeart size={20} />
-                      <span>Curtir</span>
-                    </button>
-                    <button
-                      className="btn-social share"
-                      // onClick={() => handleOpenShare(post)}
-                    >
-                      <BsShare size={18} />
-                      <span>Compartilhar</span>
-                    </button>
-                  </div>
-
-                  <button
-                    className="btn-details"
+                  <div
+                    className="post-body"
                     onClick={() => handleOpenView(post.id)}
                   >
-                    <BsEye size={18} /> Ver detalhes
-                  </button>
-                </footer>
-              </article>
-            ))
+                    <div className="post-tags">
+                      <span className="tag">{post.category || "Geral"}</span>
+                      <span className="tag price">
+                        {formatPrice(post.price || 0)}
+                      </span>
+                    </div>
+                    <p className="post-description">
+                      {post.description || "Sem descrição disponível."}
+                    </p>
+                  </div>
+
+                  <footer className="post-footer">
+                    <div className="social-group">
+                      <button className="btn-social like">
+                        <BsHeart size={20} />
+                        <span>Curtir</span>
+                      </button>
+                      <button className="btn-social share">
+                        <BsShare size={18} />
+                        <span>Compartilhar</span>
+                      </button>
+                    </div>
+
+                    <button
+                      className="btn-details"
+                      onClick={() => handleOpenView(post.id)}
+                    >
+                      <BsEye size={18} /> Ver detalhes
+                    </button>
+                  </footer>
+                </article>
+              ))
+            )}
+          </div>
+          total de postagens: {meta?.total || 0}
+          {/* Paginação */}
+          {posts?.length > 0 && (
+            <div className="pagination">
+              <button
+                className="btn-pagination"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                <BsChevronLeft size={16} /> Anterior
+              </button>
+              <span className="pagination-info">
+                Página <strong>{currentPage}</strong> de {meta?.totalPages || 1}
+              </span>
+              <button
+                className="btn-pagination"
+                onClick={handleNextPage}
+                disabled={!meta || currentPage >= meta.totalPages}
+              >
+                Próxima <BsChevronRight size={16} />
+              </button>
+            </div>
           )}
-        </div>
+        </>
       )}
+
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
       <Edit
         visible={isOpenEditModal}
@@ -178,18 +206,11 @@ function Posts() {
         post={postDetails}
         loading={loadingDetails}
       />
-
       <Delete
         visible={isOpenDeleteModal}
         onClose={() => setIsOpenDeleteModal(false)}
         post={postDeleted}
       />
-
-      {/* <ShareModal
-        visible={isShareOpen}
-        onClose={() => setIsShareOpen(false)}
-        post={selected}
-      /> */}
     </div>
   );
 }
