@@ -26,7 +26,6 @@ export const postSlice = createSlice({
   reducers: {
     fetchPostsRequest: (state, _action: PayloadAction<{ page: number }>) => {
       state.loading = true;
-      // Removido state.posts = [] para não dar "pulo" na tela ao trocar de página
     },
 
     fetchPostsSuccess: (state, action: PayloadAction<PostsResponse>) => {

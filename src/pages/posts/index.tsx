@@ -5,8 +5,6 @@ import {
   BsEye,
   BsShare,
   BsHeart,
-  BsChevronLeft,
-  BsChevronRight,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -23,6 +21,7 @@ import Create from "./modais/create";
 import Edit from "./modais/edit";
 import Delete from "./modais/delete ";
 import "./styles.css";
+import Pagination from "../../components/Pagination";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -45,18 +44,6 @@ function Posts() {
   const handleOpenView = (id: number) => {
     dispatch(fetchPostDetailsRequest({ id }));
     setIsViewOpen(true);
-  };
-
-  const handleNextPage = () => {
-    if (meta && currentPage < meta.totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
   };
 
   return (
@@ -169,27 +156,31 @@ function Posts() {
             )}
           </div>
           total de postagens: {meta?.total || 0}
-          {/* Paginação */}
           {posts?.length > 0 && (
-            <div className="pagination">
-              <button
-                className="btn-pagination"
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-              >
-                <BsChevronLeft size={16} /> Anterior
-              </button>
-              <span className="pagination-info">
-                Página <strong>{currentPage}</strong> de {meta?.totalPages || 1}
-              </span>
-              <button
-                className="btn-pagination"
-                onClick={handleNextPage}
-                disabled={!meta || currentPage >= meta.totalPages}
-              >
-                Próxima <BsChevronRight size={16} />
-              </button>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={meta?.totalPages || 1}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+            // <div className="pagination">
+            //   <button
+            //     className="btn-pagination"
+            //     onClick={handlePrevPage}
+            //     disabled={currentPage === 1}
+            //   >
+            //     <BsChevronLeft size={16} /> Anterior
+            //   </button>
+            //   <span className="pagination-info">
+            //     Página <strong>{currentPage}</strong> de {meta?.totalPages || 1}
+            //   </span>
+            //   <button
+            //     className="btn-pagination"
+            //     onClick={handleNextPage}
+            //     disabled={!meta || currentPage >= meta.totalPages}
+            //   >
+            //     Próxima <BsChevronRight size={16} />
+            //   </button>
+            // </div>
           )}
         </>
       )}
