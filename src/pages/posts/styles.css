@@ -219,3 +219,21 @@
   transform: translateY(-2px);
   filter: brightness(1.05);
 }
+
+.container-total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.total {
+  background: var(--gray-light);
+  border: none;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}

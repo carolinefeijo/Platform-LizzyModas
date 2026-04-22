@@ -8,7 +8,7 @@ export interface PostState {
   posts: Post[];
   postDetails: Post | null;
   loadingDetails: boolean;
-  meta: UserMeta | null; // Adicionado
+  meta: UserMeta | null;
 }
 
 const initialState: PostState = {
@@ -17,7 +17,7 @@ const initialState: PostState = {
   posts: [],
   postDetails: null,
   loadingDetails: false,
-  meta: null, // Adicionado
+  meta: null,
 };
 
 export const postSlice = createSlice({

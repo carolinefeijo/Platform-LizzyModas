@@ -65,6 +65,10 @@ function Products() {
         onSearch={handleSearch}
       />
 
+      <div className="container-total">
+        <div className="total">total de produtos: {products?.length || 0}</div>
+      </div>
+
       {loading ? (
         <div style={{ marginTop: "12rem" }}>
           <Loading />

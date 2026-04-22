@@ -20,8 +20,8 @@ import View from "./modais/view";
 import Create from "./modais/create";
 import Edit from "./modais/edit";
 import Delete from "./modais/delete ";
-import "./styles.css";
 import Pagination from "../../components/Pagination";
+import "./styles.css";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -57,6 +57,9 @@ function Posts() {
           <BsPlus size={24} /> Novo
         </button>
       </header>
+      <div className="container-total">
+        <div className="total">total de posts: {meta?.total || 0}</div>
+      </div>
 
       {loading ? (
         <div className="loading-wrapper">
@@ -155,32 +158,13 @@ function Posts() {
               ))
             )}
           </div>
-          total de postagens: {meta?.total || 0}
+
           {posts?.length > 0 && (
             <Pagination
               currentPage={currentPage}
               totalPages={meta?.totalPages || 1}
               onPageChange={(page) => setCurrentPage(page)}
             />
-            // <div className="pagination">
-            //   <button
-            //     className="btn-pagination"
-            //     onClick={handlePrevPage}
-            //     disabled={currentPage === 1}
-            //   >
-            //     <BsChevronLeft size={16} /> Anterior
-            //   </button>
-            //   <span className="pagination-info">
-            //     Página <strong>{currentPage}</strong> de {meta?.totalPages || 1}
-            //   </span>
-            //   <button
-            //     className="btn-pagination"
-            //     onClick={handleNextPage}
-            //     disabled={!meta || currentPage >= meta.totalPages}
-            //   >
-            //     Próxima <BsChevronRight size={16} />
-            //   </button>
-            // </div>
           )}
         </>
       )}
