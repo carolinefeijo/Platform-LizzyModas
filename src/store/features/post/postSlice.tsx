@@ -30,9 +30,17 @@ export const postSlice = createSlice({
 
     fetchPostsSuccess: (state, action: PayloadAction<PostsResponse>) => {
       state.loading = false;
-      state.posts = action.payload.data;
       state.meta = action.payload.meta;
+      state.posts = action.payload.data.map((post) => {
+        const savedLikeStatus = localStorage.getItem(`post_liked_${post.id}`);
+        return {
+          ...post,
+          likes:
+            savedLikeStatus !== null ? JSON.parse(savedLikeStatus) : post.likes,
+        };
+      });
     },
+
     fetchPostDetailsRequest: (
       state,
       _action: PayloadActions["FetchPostDetailsRequest"],
@@ -102,6 +110,32 @@ export const postSlice = createSlice({
       });
       state.posts = newList;
     },
+    setLikedPostRequest: (
+      state,
+      _action: PayloadActions["setLikedPostRequest"],
+    ) => {
+      state.loading = true;
+    },
+    setLikedPostSuccess: (
+      state,
+      action: PayloadAction<{ id: number; liked: boolean; likeCount: number }>,
+    ) => {
+      const { id, liked, likeCount } = action.payload;
+
+      state.posts = state.posts.map((post) => {
+        if (post.id === id) {
+          const updatedPost = {
+            ...post,
+            likes: liked,
+            count: { ...post.count, likes: likeCount },
+          };
+          localStorage.setItem(`post_liked_${id}`, JSON.stringify(liked));
+
+          return updatedPost;
+        }
+        return post;
+      });
+    },
   },
 });
 
@@ -116,6 +150,8 @@ export const {
   setEditPostSuccess,
   setDeletePostRequest,
   setDeletePostSuccess,
+  setLikedPostRequest,
+  setLikedPostSuccess,
 } = postSlice.actions;
 
 export default postSlice.reducer;

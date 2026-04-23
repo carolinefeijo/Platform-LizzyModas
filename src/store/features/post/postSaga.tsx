@@ -11,11 +11,14 @@ import {
   setEditPostSuccess,
   setDeletePostRequest,
   setDeletePostSuccess,
+  setLikedPostRequest,
+  setLikedPostSuccess,
 } from "./postSlice";
 import type {
   CreatePostPayload,
   DeletePostPayload,
   EditPostPayload,
+  LikedPostPayload,
   Post,
   PostsResponse,
 } from "./types";
@@ -132,10 +135,33 @@ function* setDeletePostSaga(
   }
 }
 
+// like do post
+function* fetchLikedPostSaga(
+  action: PayloadAction<LikedPostPayload>,
+): Generator {
+  try {
+    // console.log("Payload recebido na Saga:", action.payload);
+    const { id, userId } = action.payload;
+    // const { data: response }: { data: Post } = yield call(
+    //   api.post,
+    //   `/posts/${id}/like`,
+    //   { userId },
+    // );
+
+    const { data } = yield call(api.post, `/posts/${id}/like`, { userId });
+    // console.log({ response });
+    // yield put(setLikedPostSuccess({ posts: [response] }));
+    yield put(setLikedPostSuccess({ ...data, id }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* postSaga() {
   yield takeLatest(fetchPostsRequest.type, fetchPostsSaga);
   yield takeLatest(fetchPostDetailsRequest.type, fetchPostDetailsSaga);
   yield takeLatest(setCreatePostRequest.type, setCreatePostSaga);
   yield takeLatest(setEditPostRequest.type, setEditPostSaga);
   yield takeLatest(setDeletePostRequest.type, setDeletePostSaga);
+  yield takeLatest(setLikedPostRequest.type, fetchLikedPostSaga);
 }

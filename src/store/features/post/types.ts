@@ -14,6 +14,7 @@ export type Post = {
   };
   createdAt: string;
   updatedAt: string;
+  likes?: boolean;
   count: {
     likes: number;
   };
@@ -33,6 +34,11 @@ export type CreatePostPayload = {
   category: string;
   description?: string;
   size?: string;
+  userId: number;
+};
+
+export type LikedPostPayload = {
+  id: number;
   userId: number;
 };
 
@@ -104,6 +110,19 @@ export type PayloadActions = {
     type: string;
     payload: {
       id: number;
+    };
+  };
+  setLikedPostRequest: {
+    type: string;
+    payload: {
+      userId: number;
+      id: number;
+    };
+  };
+  setLikedPostSuccess: {
+    type: string;
+    payload: {
+      posts: Post[];
     };
   };
 };
