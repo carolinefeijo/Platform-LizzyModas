@@ -67,7 +67,7 @@ function Posts() {
 
   const shareWhatsApp = () => {
     if (!postToShare) return;
-    const baseUrl = "lizzy-modas-9usa7w7sa-carolinefeijos-projects.vercel.app";
+    const baseUrl = "https://platform-lizzy-modas-brcq.vercel.app/";
     const message = encodeURIComponent(
       `🛍️ *Lizzy Modas - Novidade!*\n\n` +
         `*Nome:* ${postToShare.name}\n` +
@@ -82,7 +82,7 @@ function Posts() {
   const shareFacebook = () => {
     if (!postToShare) return;
     const shareUrl = encodeURIComponent(
-      `https://lizzy-modas.vercel.app/post/${postToShare.id}`,
+      `https://platform-lizzy-modas-brcq.vercel.app/post/${postToShare.id}`,
     );
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
