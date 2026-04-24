@@ -6,6 +6,9 @@ import {
   BsShare,
   BsHeart,
   BsHeartFill,
+  BsWhatsapp,
+  BsFacebook,
+  BsX,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -17,7 +20,6 @@ import {
   fetchPostsRequest,
   type PostState,
 } from "../../store/features/post/postSlice";
-// import Loading from "../../components/Loading";
 import View from "./modais/view";
 import Create from "./modais/create";
 import Edit from "./modais/edit";
@@ -39,11 +41,14 @@ function Posts() {
   const [selected, setSelected] = useState<Post | null>(null);
   const [postDeleted, setPostDeleted] = useState<Post | null>(null);
 
+  // Estados para Compartilhamento
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [postToShare, setPostToShare] = useState<Post | null>(null);
+
   useEffect(() => {
-    if (posts.length === 0) {
-      dispatch(fetchPostsRequest({ page: currentPage }));
-    }
-  }, [dispatch, currentPage, posts.length]);
+    dispatch(fetchPostsRequest({ page: currentPage }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [dispatch, currentPage]);
 
   const handleOpenView = (id: number) => {
     dispatch(fetchPostDetailsRequest({ id }));
@@ -52,6 +57,38 @@ function Posts() {
 
   const handleLike = (userId: number, id: number) => {
     dispatch(setLikedPostRequest({ userId, id }));
+  };
+
+  const openShareOptions = (e: React.MouseEvent, post: Post) => {
+    e.stopPropagation();
+    setPostToShare(post);
+    setIsShareModalOpen(true);
+  };
+
+  const shareWhatsApp = () => {
+    if (!postToShare) return;
+    const baseUrl = "https://lizzy-modas.vercel.app";
+    const message = encodeURIComponent(
+      `🛍️ *Lizzy Modas - Novidade!*\n\n` +
+        `*Nome:* ${postToShare.name}\n` +
+        `*Descrição:* ${postToShare.description || "Sem descrição"}\n` +
+        `*Preço:* ${formatPrice(postToShare.price || 0)}\n\n` +
+        `Veja as fotos e detalhes aqui:\n${baseUrl}/post/${postToShare.id}`,
+    );
+    window.open(`https://api.whatsapp.com/send?text=${message}`, "_blank");
+    setIsShareModalOpen(false);
+  };
+
+  const shareFacebook = () => {
+    if (!postToShare) return;
+    const shareUrl = encodeURIComponent(
+      `https://lizzy-modas.vercel.app/post/${postToShare.id}`,
+    );
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+      "_blank",
+    );
+    setIsShareModalOpen(false);
   };
 
   return (
@@ -65,6 +102,7 @@ function Posts() {
           <BsPlus size={24} /> Novo
         </button>
       </header>
+
       <div className="container-total">
         <div className="total">total de posts: {meta?.total || 0}</div>
       </div>
@@ -76,7 +114,12 @@ function Posts() {
           </div>
         ) : (
           posts?.map((post) => (
-            <article className="post-card" key={post.id}>
+            <article
+              className="post-card"
+              key={post.id}
+              onClick={() => handleOpenView(post.id)}
+              style={{ cursor: "pointer" }}
+            >
               <div className="post-header">
                 <div className="author-info">
                   <div className="avatar-circle">
@@ -102,7 +145,8 @@ function Posts() {
                   <button
                     className="btn-minimal edit"
                     title="Editar"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelected(post);
                       setIsOpenEditModal(true);
                     }}
@@ -112,7 +156,8 @@ function Posts() {
                   <button
                     className="btn-minimal delete"
                     title="Excluir"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setPostDeleted(post);
                       setIsOpenDeleteModal(true);
                     }}
@@ -122,10 +167,7 @@ function Posts() {
                 </div>
               </div>
 
-              <div
-                className="post-body"
-                onClick={() => handleOpenView(post.id)}
-              >
+              <div className="post-body">
                 <div className="post-tags">
                   <span className="tag">{post.category || "Geral"}</span>
                   <span className="tag price">
@@ -141,7 +183,10 @@ function Posts() {
                 <div className="social-group">
                   <button
                     className="btn-social like"
-                    onClick={() => handleLike(post.userId, post.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLike(post.userId, post.id);
+                    }}
                   >
                     {post.likes ? (
                       <BsHeartFill size={20} color="#edaee4" />
@@ -149,13 +194,15 @@ function Posts() {
                       <BsHeart size={20} />
                     )}
                     <span>{post.likes ? "Curtiu" : "Curtir"}</span>
-
                     <span className="like-count">
                       ({post.count?.likes || 0})
                     </span>
                   </button>
 
-                  <button className="btn-social share">
+                  <button
+                    className="btn-social share"
+                    onClick={(e) => openShareOptions(e, post)}
+                  >
                     <BsShare size={18} />
                     <span>Compartilhar</span>
                   </button>
@@ -163,7 +210,10 @@ function Posts() {
 
                 <button
                   className="btn-details"
-                  onClick={() => handleOpenView(post.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenView(post.id);
+                  }}
                 >
                   <BsEye size={18} /> Ver detalhes
                 </button>
@@ -179,6 +229,39 @@ function Posts() {
           totalPages={meta?.totalPages || 1}
           onPageChange={(page) => setCurrentPage(page)}
         />
+      )}
+
+      {isShareModalOpen && (
+        <div
+          className="modal-share-overlay"
+          onClick={() => setIsShareModalOpen(false)}
+        >
+          <div
+            className="modal-share-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-share-header">
+              <h3>Compartilhar</h3>
+              <button
+                className="btn-close"
+                onClick={() => setIsShareModalOpen(false)}
+              >
+                <BsX size={24} />
+              </button>
+            </div>
+            <p>Escolha uma rede social para publicar:</p>
+            <div className="share-options-grid">
+              <button className="share-btn whatsapp" onClick={shareWhatsApp}>
+                <BsWhatsapp size={24} />
+                <span>WhatsApp</span>
+              </button>
+              <button className="share-btn facebook" onClick={shareFacebook}>
+                <BsFacebook size={24} />
+                <span>Facebook</span>
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       <Create visible={isOpenModal} onClose={() => setIsOpenModal(false)} />
