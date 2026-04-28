@@ -32,11 +32,16 @@
   text-align: center;
 }
 
-.form-group {
-  margin-bottom: 1.2rem;
+.form-group-login {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
-.form-group label {
+.form-group-login label {
   display: block;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
@@ -44,7 +49,7 @@
   color: #555;
 }
 
-.form-group input {
+.form-group-login input {
   width: 100%;
   padding: 12px;
   border: 1px solid var(--border-color);

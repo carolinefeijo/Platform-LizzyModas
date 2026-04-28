@@ -26,7 +26,7 @@ function Login() {
         <h2>Entrar no Sistema</h2>
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group-login">
             <label>E-mail</label>
             <input
               type="email"
@@ -37,7 +37,7 @@ function Login() {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group-login">
             <label>Senha</label>
             <input
               type="password"

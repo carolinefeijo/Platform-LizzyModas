@@ -140,17 +140,8 @@ function* fetchLikedPostSaga(
   action: PayloadAction<LikedPostPayload>,
 ): Generator {
   try {
-    // console.log("Payload recebido na Saga:", action.payload);
     const { id, userId } = action.payload;
-    // const { data: response }: { data: Post } = yield call(
-    //   api.post,
-    //   `/posts/${id}/like`,
-    //   { userId },
-    // );
-
     const { data } = yield call(api.post, `/posts/${id}/like`, { userId });
-    // console.log({ response });
-    // yield put(setLikedPostSuccess({ posts: [response] }));
     yield put(setLikedPostSuccess({ ...data, id }));
   } catch (error) {
     console.log(error);
