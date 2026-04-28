@@ -13,7 +13,6 @@ export const formatDate = (dateString: string) => {
   });
 };
 
-// Formata um número (ex: 1500.5) para R$ 1.500,50
 export const formatPrice = (price: number) => {
   // Aqui está o segredo: dividimos por 100 na hora de EXIBIR
   return (price / 100).toLocaleString("pt-BR", {
