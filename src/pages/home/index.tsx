@@ -18,8 +18,11 @@ import "./styles.css";
 const Home = () => {
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { posts } = useSelector((state: any) => state.post);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { products } = useSelector((state: any) => state.product);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { users } = useSelector((state: any) => state.user);
 
   const handleFetchData = useCallback(() => {
