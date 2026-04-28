@@ -16,16 +16,7 @@ function View({
   return (
     <Modal title="Detalhes do Usuário" onClose={onClose} visible={visible}>
       <div className="view-container">
-        <div className="view-header-profile">
-          <div className="avatar-large">
-            {user.name.charAt(0).toUpperCase()}
-          </div>
-          <div className="view-title-group">
-            <h3>{user.name}</h3>
-            <span className="badge-status">Colaborador Ativo</span>
-          </div>
-        </div>
-
+        <div className="view-header-profile"></div>
         <div className="view-details-grid">
           <div className="view-item">
             <div className="view-icon">
@@ -56,6 +47,11 @@ function View({
               <p>{user.phone || "Não informado"}</p>
             </div>
           </div>
+        </div>
+        <div className="modal-footer">
+          <button className="btn-cancel" onClick={onClose}>
+            Cancelar
+          </button>
         </div>
       </div>
     </Modal>
